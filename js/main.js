@@ -212,6 +212,7 @@ jQuery(document).ready(function($) {
 var siteStellar = function() {
 	var enableParallax = !window.matchMedia('(prefers-reduced-motion: reduce)').matches && $(window).width() >= 1024;
 	if (!enableParallax) return;
+	if (typeof $.fn.stellar !== 'function') return; // guard if plugin not loaded on this page
 	$(window).stellar({
 	    responsive: true,
 	    parallaxBackgrounds: true,
@@ -302,5 +303,35 @@ $(window).on('resize orientationchange', function(){
 
   };
   siteScroll();
+
+  // Button ripple effect (skips if reduced motion)
+  var allowMotion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  $('body').on('click', '.btn', function(e){
+    if (!allowMotion) return;
+    var $btn = $(this);
+    var off = $btn.offset();
+    var x = e.pageX - off.left; var y = e.pageY - off.top;
+    var $r = $('<span class="ripple"/>').css({left:x, top:y, width:20, height:20});
+    $btn.append($r);
+    setTimeout(function(){ $r.remove(); }, 600);
+  });
+
+  // Randomize gallery item shapes for pleasing layout
+  var sizes = ['small','tall','wide','big','small','tall'];
+  $('.gallery-grid .gallery-item').each(function(i){
+    var c = sizes[i % sizes.length];
+    $(this).addClass(c);
+  });
+
+  // Lightbox for gallery
+  if ($('.gallery-grid').length && $.fn.magnificPopup){
+    $('.gallery-grid').magnificPopup({
+      delegate: 'a',
+      type: 'image',
+      gallery: { enabled: true },
+      removalDelay: 200,
+      mainClass: 'mfp-fade'
+    });
+  }
 
 });
