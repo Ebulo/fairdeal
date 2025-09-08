@@ -323,14 +323,25 @@ $(window).on('resize orientationchange', function(){
     $(this).addClass(c);
   });
 
-  // Lightbox for gallery
-  if ($('.gallery-grid').length && $.fn.magnificPopup){
+  // Lightbox for gallery (prefer Fancybox; fallback to Magnific)
+  if ($('.gallery-grid').length && $.fancybox) {
+    $.fancybox.defaults.buttons = ['zoom','close'];
+    $.fancybox.defaults.animationEffect = 'zoom-in-out';
+    $.fancybox.defaults.transitionEffect = 'fade';
+    $.fancybox.defaults.loop = true;
+    $('[data-fancybox="gallery"]').fancybox();
+  } else if ($('.gallery-grid').length && $.fn.magnificPopup) {
     $('.gallery-grid').magnificPopup({
       delegate: 'a',
       type: 'image',
+      closeOnContentClick: false,
+      closeBtnInside: false,
+      fixedContentPos: true,
       gallery: { enabled: true },
       removalDelay: 200,
-      mainClass: 'mfp-fade'
+      mainClass: 'mfp-fade mfp-with-zoom',
+      zoom: { enabled: true, duration: 300, easing: 'ease-out' },
+      image: { verticalFit: true }
     });
   }
 

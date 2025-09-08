@@ -133,6 +133,7 @@ a:hover,a:focus{ color:var(--fd-gold); }
   60%{ transform: translate(-50%, -4px); }
 }
 @media (max-width: 575.98px){ .arrow-down{ bottom:34px !important; } }
+@media (max-width: 575.98px){ .arrow-down{ bottom:56px !important; } }
 
 /* Soft page load reveal (opacity-only to avoid jank) */
 .site-wrap{ opacity:0; transition:opacity .5s ease; }
@@ -167,3 +168,56 @@ a:hover,a:focus{ color:var(--fd-gold); }
 .gallery-item:hover::after{ opacity:.45; }
 .gallery-link{ display:block; width:100%; height:100%; }
 .gallery-cta{ text-align:center; margin-top: 20px; }
+
+/* Lightbox (Magnific) customizations */
+.mfp-bg{ background: rgba(5,10,20,.92); }
+.mfp-image-holder .mfp-content{ max-width: 92vw; max-height: 92vh; }
+.mfp-figure{ border-radius: 14px; overflow: hidden; }
+img.mfp-img{ border-radius: 14px; }
+.mfp-close{
+  background: var(--fd-blue);
+  color:#fff !important; opacity: 1; text-shadow: none;
+  border-radius: 999px; width: 38px; height: 38px; line-height: 38px;
+  right: -14px; top: -14px; transition: transform .2s ease, background .2s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,.35), 0 0 0 2px rgba(255,255,255,.15) inset;
+}
+.mfp-close:hover{ transform: scale(1.08) rotate(90deg); background: var(--fd-gold); color: var(--fd-indigo) !important; }
+.mfp-counter{ right: 50px; opacity: .85; }
+
+/* Contact form: reduce curve only for message */
+#contact-section textarea#message{ border-radius: 4px !important; }
+
+/* Fancybox customizations */
+.fancybox-bg{ background: rgba(5,10,20,.92); }
+.fancybox-content{ border-radius: 14px; overflow: hidden; }
+.fancybox-button{ background: var(--fd-blue); color:#fff; border-radius: 999px; box-shadow: 0 8px 20px rgba(0,0,0,.25); }
+.fancybox-button:hover{ background: var(--fd-gold); color: var(--fd-indigo); transform: translateY(-1px); }
+.fancybox-button--close svg{ filter: drop-shadow(0 2px 3px rgba(0,0,0,.25)); }
+
+/* How It Works – center on small screens */
+@media (max-width: 767.98px){
+  #howitworks-section .pr-5{ padding: 0 8px !important; margin: 0 auto; text-align:center; }
+}
+
+/* Hero content centering helpers */
+.site-blocks-cover > .container > .row{ align-items:center !important; justify-content:center !important; }
+
+/* Testimonials – mobile readability and interaction */
+.testimonial-wrap-1 {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  align-items: center;
+}
+
+.testimonial{ transition: transform .3s ease, box-shadow .3s ease; padding: 20px !important; margin: 10px !important; border-radius: 14px; background:#fff; border: 1px solid #0b2a5b}
+.owl-carousel .owl-item.active .testimonial{ transform: translateY(-6px); padding: 10px; border-radius: 14px; background:#fff;}
+@media (max-width: 575.98px){
+  .testimonial blockquote p{ font-size: .95rem; line-height: 1.45; }
+  .testimonial figure p{ font-size: .85rem; }
+}
+
+/* Gallery – responsive tweaks */
+@media (max-width: 575.98px){
+  .gallery-grid{ grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:10px; }
+}
