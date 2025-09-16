@@ -752,9 +752,9 @@ h5,
   -o-transition: 0.3s all ease;
   transition: 0.3s all ease;
 }
-.sticky-wrapper .site-navbar {
+/* .sticky-wrapper .site-navbar {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
+} */
 .sticky-wrapper .site-navbar .site-logo a {
   color: #fff;
 }
