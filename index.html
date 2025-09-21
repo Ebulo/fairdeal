@@ -617,6 +617,18 @@
 
               <div class="row form-group">
                 <div class="col-md-12">
+                  <label class="text-black" for="captchaAnswer">Human Check</label>
+                  <div class="d-flex align-items-center mb-2">
+                    <span id="captchaQuestion" class="badge badge-primary px-3 py-2 mr-3">0 + 0 = ?</span>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="captchaRefresh" aria-label="Refresh captcha" style="font-size: 0.8em; padding: 4px 8px">Refresh</button>
+                  </div>
+                  <input type="number" id="captchaAnswer" name="captchaAnswer" class="form-control" placeholder="Enter the answer" inputmode="numeric" required>
+                  <small class="form-text text-muted">Solve the quick math problem so we know you are human.</small>
+                </div>
+              </div>
+
+              <div class="row form-group">
+                <div class="col-md-12">
                   <button type="submit" class="btn btn-primary btn-md text-white" id="contactSubmit">Send Message</button>
                 </div>
               </div>

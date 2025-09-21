@@ -379,6 +379,34 @@ jQuery(document).ready(function ($) {
     if (!$form.length) return;
     var $submit = $("#contactSubmit");
     var $toast = $("#fdToast");
+    var $captchaQuestion = $("#captchaQuestion");
+    var $captchaAnswer = $("#captchaAnswer");
+    var $captchaRefresh = $("#captchaRefresh");
+    var captchaSolution = null;
+
+    var generateCaptcha = function () {
+      if (!$captchaQuestion.length) return;
+      var first = Math.floor(Math.random() * 8) + 2; // 2-9 for variety
+      var second = Math.floor(Math.random() * 8) + 1; // 1-8
+      captchaSolution = first + second;
+      $captchaQuestion.text(first + " + " + second + " = ?");
+      if ($captchaAnswer.length) {
+        $captchaAnswer.val("");
+      }
+    };
+
+    if ($captchaQuestion.length) {
+      generateCaptcha();
+    }
+
+    if ($captchaRefresh.length) {
+      $captchaRefresh.on("click", function () {
+        generateCaptcha();
+        if ($captchaAnswer.length) {
+          $captchaAnswer.trigger("focus");
+        }
+      });
+    }
 
     var showToast = function (message, isError) {
       if (!$toast.length) return;
@@ -403,10 +431,22 @@ jQuery(document).ready(function ($) {
       var email = $.trim($("#email").val());
       var subject = $.trim($("#subject").val()) || "New Contact Inquiry";
       var message = $.trim($("#message").val());
+      var captchaResponse = $captchaAnswer.length
+        ? $.trim($captchaAnswer.val())
+        : "";
 
       if (!firstName || !lastName || !email || !message) {
         showToast("Please fill in all required fields.", true);
         return;
+      }
+
+      if ($captchaQuestion.length) {
+        var parsedCaptcha = parseInt(captchaResponse, 10);
+        if (!captchaResponse || isNaN(parsedCaptcha) || parsedCaptcha !== captchaSolution) {
+          showToast("Captcha answer is incorrect. Please try again.", true);
+          generateCaptcha();
+          return;
+        }
       }
 
       var fullName = firstName + " " + lastName;
@@ -438,10 +478,12 @@ jQuery(document).ready(function ($) {
         .then(function () {
           showToast("Message sent successfully!", false);
           $form[0].reset();
+          generateCaptcha();
         })
         .catch(function (err) {
           console.error("Email send failed", err);
           showToast("Unable to send message. Please try again later.", true);
+          generateCaptcha();
         })
         .finally(function () {
           $submit.prop("disabled", false).text("Send Message");
