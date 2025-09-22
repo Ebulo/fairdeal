@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Prevent duplicate querystring archives from being crawled
+Disallow: /*?replytocom=
+
+Sitemap: https://fairdealassets.com/sitemap.xml

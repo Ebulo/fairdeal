@@ -121,21 +121,50 @@ jQuery(document).ready(function ($) {
   // sitePlusMinus();
 
   var siteSliderRange = function () {
-    $("#slider-range").slider({
+    var $slider = $("#slider-range");
+    if (!$slider.length || typeof $slider.slider !== "function") return;
+
+    var parseNumber = function (value, fallback) {
+      var parsed = parseInt(value, 10);
+      return isNaN(parsed) ? fallback : parsed;
+    };
+
+    var min = parseNumber($slider.data("min"), 0);
+    var max = parseNumber($slider.data("max"), 100000);
+    var step = parseNumber($slider.data("step"), 100);
+    var valuesAttr = ($slider.data("values") || "").toString().split(",");
+    var defaultValues = valuesAttr.length === 2
+      ? [parseNumber(valuesAttr[0], min), parseNumber(valuesAttr[1], max)]
+      : [min, max];
+
+    var $amount = $("#amount");
+    var currency = ($slider.data("currency") || $amount.data("currency") || "$").toString();
+    var unit = ($slider.data("unit") || $amount.data("unit") || "").toString();
+
+    var formatValue = function (val) {
+      var numeric = Number(val) || 0;
+      var formatted = numeric.toLocaleString("en-IN");
+      if (unit) formatted += " " + unit;
+      return currency + formatted;
+    };
+
+    $slider.slider({
       range: true,
-      min: 0,
-      max: 100000,
-      values: [0, 15000],
+      min: min,
+      max: max,
+      step: step,
+      values: defaultValues,
       slide: function (event, ui) {
-        $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+        if ($amount.length) {
+          $amount.val(formatValue(ui.values[0]) + " - " + formatValue(ui.values[1]));
+        }
       },
     });
-    $("#amount").val(
-      "$" +
-        $("#slider-range").slider("values", 0) +
-        " - $" +
-        $("#slider-range").slider("values", 1)
-    );
+
+    if ($amount.length) {
+      var currentValues = $slider.slider("values");
+      $amount.val(formatValue(currentValues[0]) + " - " + formatValue(currentValues[1]));
+    }
   };
   siteSliderRange();
 
@@ -513,7 +542,7 @@ jQuery(document).ready(function ($) {
       return (
         '<div class="gallery-item">' +
           '<button type="button" class="gallery-link" data-image="' + safeSrc + '" data-caption="' + safeCaption + '">' +
-            '<img src="' + safeSrc + '" alt="' + safeCaption + '">' +
+            '<img src="' + safeSrc + '" alt="' + safeCaption + '" loading="lazy" decoding="async">' +
           '</button>' +
         '</div>'
       );
