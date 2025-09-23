@@ -2014,6 +2014,63 @@ h5,
   transform: translateX(0%);
 }
 
+.founders-grid {
+  row-gap: 2rem;
+}
+.founder-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(11, 42, 91, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.founder-card figure,
+.founder-card img {
+  border-radius: 0;
+}
+.founder-card figure img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+.founder-card .social {
+  top: 18px;
+  left: 18px;
+  bottom: auto;
+  border-radius: 32px;
+  display: inline-flex;
+  gap: 8px;
+  padding: 8px 14px;
+  -webkit-transform: translateY(-140%);
+  -ms-transform: translateY(-140%);
+  transform: translateY(-140%);
+  background: rgba(11, 42, 91, 0.88);
+}
+.founder-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 55px rgba(11, 42, 91, 0.12);
+}
+.founder-card:hover .social {
+  -webkit-transform: translateY(0%);
+  -ms-transform: translateY(0%);
+  transform: translateY(0%);
+}
+.founder-card .position {
+  font-weight: 600;
+  color: #0b2a5b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.founder-card p {
+  color: #445064;
+}
+
+@media (max-width: 767.98px) {
+  .founder-card figure img {
+    height: 260px;
+  }
+}
+
 .custom-direction {
   position: relative;
   z-index: 99;
