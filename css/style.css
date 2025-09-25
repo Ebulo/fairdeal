@@ -2024,18 +2024,27 @@ h5,
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.founder-card figure,
-.founder-card img {
-  border-radius: 0;
+.founder-card figure {
+  margin: 0;
+  padding: 32px 0 24px;
+  position: relative;
+  overflow: visible;
+  background: linear-gradient(180deg, #f5f8fc 0%, #eef3f9 100%);
 }
 .founder-card figure img {
-  width: 100%;
-  height: 320px;
+  width: 140px;
+  height: 140px;
   object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  box-shadow: 0 14px 30px rgba(11, 42, 91, 0.18);
+  display: block;
+  margin: 0 auto;
 }
 .founder-card .social {
-  top: 18px;
-  left: 18px;
+  top: 24px;
+  right: 24px;
+  left: auto;
   bottom: auto;
   border-radius: 32px;
   display: inline-flex;
@@ -2060,14 +2069,20 @@ h5,
   color: #0b2a5b;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  display: inline-block;
+  margin-bottom: 12px;
 }
 .founder-card p {
   color: #445064;
 }
 
 @media (max-width: 767.98px) {
+  .founder-card figure {
+    padding: 28px 0 20px;
+  }
   .founder-card figure img {
-    height: 260px;
+    width: 120px;
+    height: 120px;
   }
 }
 
