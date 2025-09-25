@@ -1983,9 +1983,9 @@ h5,
   padding: 0;
   bottom: 0;
   padding: 10px;
-  -webkit-transform: translateX(-101%);
-  -ms-transform: translateX(-101%);
-  transform: translateX(-101%);
+  -webkit-transform: translateX(-110%);
+  -ms-transform: translateX(-110%);
+  transform: translateX(-110%);
   -webkit-transition: 0.3s all ease;
   -o-transition: 0.3s all ease;
   transition: 0.3s all ease;
