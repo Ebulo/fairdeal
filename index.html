@@ -746,18 +746,18 @@
 
             
 
-            <form id="contactForm" class="p-5 bg-white">
+            <form id="contactForm" class="p-5 bg-white" data-fd-contact-form>
               
               <h2 class="h4 text-black mb-5">Contact Form</h2> 
 
               <div class="row form-group">
                 <div class="col-md-6 mb-3 mb-md-0">
                   <label class="text-black" for="fname">First Name</label>
-                  <input type="text" id="fname" name="firstName" class="form-control" required>
+                  <input type="text" id="fname" name="firstName" class="form-control" data-fd-field="firstName" required>
                 </div>
                 <div class="col-md-6">
                   <label class="text-black" for="lname">Last Name</label>
-                  <input type="text" id="lname" name="lastName" class="form-control" required>
+                  <input type="text" id="lname" name="lastName" class="form-control" data-fd-field="lastName" required>
                 </div>
               </div>
 
@@ -765,7 +765,7 @@
                 
                 <div class="col-md-12">
                   <label class="text-black" for="email">Email</label> 
-                  <input type="email" id="email" name="email" class="form-control" required>
+                  <input type="email" id="email" name="email" class="form-control" data-fd-field="email" required>
                 </div>
               </div>
 
@@ -773,14 +773,14 @@
                 
                 <div class="col-md-12">
                   <label class="text-black" for="subject">Subject</label> 
-                  <input type="text" id="subject" name="subject" class="form-control" required>
+                  <input type="text" id="subject" name="subject" class="form-control" data-fd-field="subject" required>
                 </div>
               </div>
 
               <div class="row form-group">
                 <div class="col-md-12">
                   <label class="text-black" for="message">Message</label> 
-                  <textarea name="message" id="message" cols="30" rows="7" class="form-control" placeholder="Write your notes or questions here..." required></textarea>
+                  <textarea name="message" id="message" cols="30" rows="7" class="form-control" data-fd-field="message" placeholder="Write your notes or questions here..." required></textarea>
                 </div>
               </div>
 
@@ -788,17 +788,17 @@
                 <div class="col-md-12">
                   <label class="text-black" for="captchaAnswer">Human Check</label>
                   <div class="d-flex align-items-center mb-2">
-                    <span id="captchaQuestion" class="badge badge-primary px-3 py-2 mr-3">0 + 0 = ?</span>
-                    <button type="button" class="btn btn-outline-secondary btn-sm" id="captchaRefresh" aria-label="Refresh captcha" style="font-size: 0.8em; padding: 4px 8px">Refresh</button>
+                    <span id="captchaQuestion" class="badge badge-primary px-3 py-2 mr-3" data-fd-captcha-question>0 + 0 = ?</span>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="captchaRefresh" data-fd-captcha-refresh aria-label="Refresh captcha" style="font-size: 0.8em; padding: 4px 8px">Refresh</button>
                   </div>
-                  <input type="number" id="captchaAnswer" name="captchaAnswer" class="form-control" placeholder="Enter the answer" inputmode="numeric" required>
+                  <input type="number" id="captchaAnswer" name="captchaAnswer" class="form-control" data-fd-captcha-answer placeholder="Enter the answer" inputmode="numeric" required>
                   <small class="form-text text-muted">Solve the quick math problem so we know you are human.</small>
                 </div>
               </div>
 
               <div class="row form-group">
                 <div class="col-md-12">
-                  <button type="submit" class="btn btn-primary btn-md text-white" id="contactSubmit">Send Message</button>
+                  <button type="submit" class="btn btn-primary btn-md text-white" id="contactSubmit" data-fd-submit>Send Message</button>
                 </div>
               </div>
 
@@ -812,7 +812,7 @@
               <p class="mb-3"><a href="tel://+917684095344">+91 7684095344</a></p>
 
               <p class="mb-0 font-weight-bold">Whatsapp</p>
-              <p class="mb-3"><a href="https://wa.me/7787953323/?text=Hey+There,+I+needed+assistance+in+properties+can+we+conect">+91 7787953323</a></p>
+              <p class="mb-3"><a href="https://wa.me/917684095344/?text=Hey+There,+I+needed+assistance+in+properties+can+we+conect">+91 7684095344</a></p>
 
               <p class="mb-0 font-weight-bold">Email</p>
               <p class="mb-3"><a href="mailto:fairdeal.asset@gmail.com">fairdeal.asset@gmail.com</a></p>

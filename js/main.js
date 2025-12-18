@@ -133,12 +133,17 @@ jQuery(document).ready(function ($) {
     var max = parseNumber($slider.data("max"), 100000);
     var step = parseNumber($slider.data("step"), 100);
     var valuesAttr = ($slider.data("values") || "").toString().split(",");
-    var defaultValues = valuesAttr.length === 2
-      ? [parseNumber(valuesAttr[0], min), parseNumber(valuesAttr[1], max)]
-      : [min, max];
+    var defaultValues =
+      valuesAttr.length === 2
+        ? [parseNumber(valuesAttr[0], min), parseNumber(valuesAttr[1], max)]
+        : [min, max];
 
     var $amount = $("#amount");
-    var currency = ($slider.data("currency") || $amount.data("currency") || "$").toString();
+    var currency = (
+      $slider.data("currency") ||
+      $amount.data("currency") ||
+      "$"
+    ).toString();
     var unit = ($slider.data("unit") || $amount.data("unit") || "").toString();
 
     var formatValue = function (val) {
@@ -156,14 +161,18 @@ jQuery(document).ready(function ($) {
       values: defaultValues,
       slide: function (event, ui) {
         if ($amount.length) {
-          $amount.val(formatValue(ui.values[0]) + " - " + formatValue(ui.values[1]));
+          $amount.val(
+            formatValue(ui.values[0]) + " - " + formatValue(ui.values[1])
+          );
         }
       },
     });
 
     if ($amount.length) {
       var currentValues = $slider.slider("values");
-      $amount.val(formatValue(currentValues[0]) + " - " + formatValue(currentValues[1]));
+      $amount.val(
+        formatValue(currentValues[0]) + " - " + formatValue(currentValues[1])
+      );
     }
   };
   siteSliderRange();
@@ -334,15 +343,26 @@ jQuery(document).ready(function ($) {
   OnePageNavigation();
 
   var siteScroll = function () {
-    $(window).scroll(function () {
-      var st = $(this).scrollTop();
+    var $win = $(window);
+    var $nav = $(".js-sticky-header");
 
-      if (st > 100) {
-        $(".js-sticky-header").addClass("shrink");
-      } else {
-        $(".js-sticky-header").removeClass("shrink");
-      }
-    });
+    if (!$nav.length) return;
+
+    var getThreshold = function () {
+      // return Math.max(window.innerHeight || 0, $win.height() || 0);
+      return $win.height() * 0.2;
+    };
+
+    var applyNavState = function () {
+      var st = $win.scrollTop();
+      var isPast = st > getThreshold();
+      $nav.toggleClass("is-glass", isPast);
+      $nav.toggleClass("shrink", isPast);
+    };
+
+    $win.on("scroll", applyNavState);
+    $win.on("resize orientationchange", applyNavState);
+    applyNavState();
   };
   siteScroll();
 
@@ -402,39 +422,137 @@ jQuery(document).ready(function ($) {
     });
   })();
 
-  // Contact form email handling
+  // WhatsApp button + contact popup
   (function () {
-    var $form = $("#contactForm");
-    if (!$form.length) return;
-    var $submit = $("#contactSubmit");
-    var $toast = $("#fdToast");
-    var $captchaQuestion = $("#captchaQuestion");
-    var $captchaAnswer = $("#captchaAnswer");
-    var $captchaRefresh = $("#captchaRefresh");
-    var captchaSolution = null;
+    var whatsappUrl =
+      "https://wa.me/917684095344/?text=Hey+There,+I+needed+assistance+in+properties+can+we+conect";
+    var phoneDisplay = "+91 7684095344";
+    var phoneTel = "+917684095344";
+    var whatsappDisplay = "+91 7684095344";
+    var emailAddress = "fairdeal.asset@gmail.com";
+    var officeHours = "Monday to Saturday, 10:00 AM - 6:00 PM IST";
+    var serviceArea = "Odisha and adjoining regions";
 
-    var generateCaptcha = function () {
-      if (!$captchaQuestion.length) return;
-      var first = Math.floor(Math.random() * 8) + 2; // 2-9 for variety
-      var second = Math.floor(Math.random() * 8) + 1; // 1-8
-      captchaSolution = first + second;
-      $captchaQuestion.text(first + " + " + second + " = ?");
-      if ($captchaAnswer.length) {
-        $captchaAnswer.val("");
+    var $body = $("body");
+
+    if (!$(".fd-whatsapp-fab").length) {
+      var fabHtml = [
+        '<a class="fd-whatsapp-fab" href="',
+        whatsappUrl,
+        '" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">',
+        '<span class="icon-whatsapp" aria-hidden="true"></span>',
+        "</a>",
+      ].join("");
+      $body.append(fabHtml);
+    }
+
+    var $modal = $(".fd-contact-modal");
+    if (!$modal.length) {
+      var modalHtml = [
+        '<div class="fd-contact-modal" aria-hidden="true">',
+        '<div class="fd-contact-modal__dialog fd-contact-modal__dialog--single" role="dialog" aria-modal="true" aria-labelledby="fdContactModalTitle" tabindex="-1">',
+        '<button type="button" class="fd-contact-modal__close" aria-label="Close contact form" data-fd-modal-close>&times;</button>',
+        '<div class="fd-contact-modal__info">',
+        '<p class="fd-contact-modal__eyebrow">Get in Touch</p>',
+        '<h3 id="fdContactModalTitle" class="fd-contact-modal__title">Ready to find your dream property?</h3>',
+        '<p class="fd-contact-modal__subtitle">Connect with our team for trusted guidance and quick responses.</p>',
+        '<div class="fd-contact-modal__details">',
+        '<p style="font-size: 0.8rem;"><strong>Phone/Whatsapp</strong><br><a href="tel:',
+        phoneTel,
+        '">',
+        phoneDisplay,
+        "</a></p>",
+        '<p style="font-size: 0.8rem;"><strong>Email</strong><br><a href="mailto:',
+        emailAddress,
+        '">',
+        emailAddress,
+        "</a></p>",
+        '<p style="font-size: 0.8rem;"><strong>Office Hours</strong><br>',
+        officeHours,
+        "</p>",
+        '<p style="font-size: 0.8rem;"><strong>Service Locations</strong><br>',
+        serviceArea,
+        "</p>",
+        "</div>",
+        '<div class="fd-modal-actions">',
+        '<a class="btn fd-btn-whatsapp" href="',
+        whatsappUrl,
+        '" target="_blank" rel="noopener"><span class="icon-whatsapp" aria-hidden="true"></span> WhatsApp Us</a>',
+        '<a class="btn fd-btn-call" href="tel:',
+        phoneTel,
+        '"><span class="icon-phone" aria-hidden="true"></span> Call Now</a>',
+        '<a class="btn fd-btn-email" href="mailto:',
+        emailAddress,
+        '"><span class="icon-envelope" aria-hidden="true"></span> Send Email</a>',
+        "</div>",
+        "</div>",
+        "</div>",
+        "</div>",
+      ].join("");
+      $body.append(modalHtml);
+      $modal = $(".fd-contact-modal");
+    }
+
+    if (!$modal.length) return;
+
+    var $dialog = $modal.find(".fd-contact-modal__dialog");
+    var closeModal = function () {
+      $modal.removeClass("is-visible").attr("aria-hidden", "true");
+      $("body").removeClass("fd-modal-open");
+    };
+
+    var openModal = function () {
+      $modal.addClass("is-visible").attr("aria-hidden", "false");
+      $("body").addClass("fd-modal-open");
+      if ($dialog.length) {
+        $dialog.trigger("focus");
       }
     };
 
-    if ($captchaQuestion.length) {
-      generateCaptcha();
-    }
+    $modal.on("click", "[data-fd-modal-close]", function () {
+      closeModal();
+    });
 
-    if ($captchaRefresh.length) {
-      $captchaRefresh.on("click", function () {
-        generateCaptcha();
-        if ($captchaAnswer.length) {
-          $captchaAnswer.trigger("focus");
-        }
-      });
+    $modal.on("click", function (evt) {
+      if (evt.target === this) {
+        closeModal();
+      }
+    });
+
+    $modal.on("click", "[data-fd-scroll-contact]", function () {
+      closeModal();
+    });
+
+    $(document).on("keydown", function (evt) {
+      if (!$modal.hasClass("is-visible")) return;
+      if (evt.key === "Escape") {
+        closeModal();
+      }
+    });
+
+    $(window).on("load", function () {
+      setTimeout(openModal, 700);
+    });
+  })();
+
+  // Contact form email handling
+  (function () {
+    var $forms = $("[data-fd-contact-form]");
+    if (!$forms.length) {
+      var $legacyForm = $("#contactForm");
+      if ($legacyForm.length) {
+        $legacyForm.attr("data-fd-contact-form", "legacy");
+        $forms = $legacyForm;
+      }
+    }
+    if (!$forms.length) return;
+
+    var $toast = $("#fdToast");
+    if (!$toast.length) {
+      $toast = $(
+        '<div id="fdToast" class="fd-toast" role="status" aria-live="polite" aria-hidden="true"></div>'
+      );
+      $("body").append($toast);
     }
 
     var showToast = function (message, isError) {
@@ -452,159 +570,256 @@ jQuery(document).ready(function ($) {
       $toast.data("timeoutId", timeoutId);
     };
 
-    $form.on("submit", function (evt) {
-      evt.preventDefault();
-
-      var firstName = $.trim($("#fname").val());
-      var lastName = $.trim($("#lname").val());
-      var email = $.trim($("#email").val());
-      var subject = $.trim($("#subject").val()) || "New Contact Inquiry";
-      var message = $.trim($("#message").val());
-      var captchaResponse = $captchaAnswer.length
-        ? $.trim($captchaAnswer.val())
-        : "";
-
-      if (!firstName || !lastName || !email || !message) {
-        showToast("Please fill in all required fields.", true);
-        return;
+    var initContactForm = function ($form) {
+      var $submit = $form.find("[data-fd-submit]");
+      if (!$submit.length) {
+        $submit = $form.find("#contactSubmit");
       }
+      if (!$submit.length) return;
+
+      var submitText = $.trim($submit.text()) || "Send Message";
+
+      var findField = function (name) {
+        var $field = $form.find('[data-fd-field="' + name + '"]');
+        if (!$field.length) {
+          $field = $form.find('[name="' + name + '"]');
+        }
+        return $field;
+      };
+
+      var $firstName = findField("firstName");
+      var $lastName = findField("lastName");
+      var $email = findField("email");
+      var $subject = findField("subject");
+      var $message = findField("message");
+
+      var $captchaQuestion = $form.find("[data-fd-captcha-question]");
+      if (!$captchaQuestion.length) {
+        $captchaQuestion = $form.find("#captchaQuestion");
+      }
+      var $captchaAnswer = $form.find("[data-fd-captcha-answer]");
+      if (!$captchaAnswer.length) {
+        $captchaAnswer = $form.find("#captchaAnswer");
+      }
+      var $captchaRefresh = $form.find("[data-fd-captcha-refresh]");
+      if (!$captchaRefresh.length) {
+        $captchaRefresh = $form.find("#captchaRefresh");
+      }
+
+      var captchaSolution = null;
+      var generateCaptcha = function () {
+        if (!$captchaQuestion.length) return;
+        var first = Math.floor(Math.random() * 8) + 2; // 2-9 for variety
+        var second = Math.floor(Math.random() * 8) + 1; // 1-8
+        captchaSolution = first + second;
+        $captchaQuestion.text(first + " + " + second + " = ?");
+        if ($captchaAnswer.length) {
+          $captchaAnswer.val("");
+        }
+      };
 
       if ($captchaQuestion.length) {
-        var parsedCaptcha = parseInt(captchaResponse, 10);
-        if (!captchaResponse || isNaN(parsedCaptcha) || parsedCaptcha !== captchaSolution) {
-          showToast("Captcha answer is incorrect. Please try again.", true);
-          generateCaptcha();
-          return;
-        }
+        generateCaptcha();
       }
 
-      var fullName = firstName + " " + lastName;
-
-      $submit.prop("disabled", true).text("Sending...");
-
-      fetch("https://formsubmit.co/ajax/fairdeal.asset@gmail.com", {
-        //   fetch("https://formsubmit.co/ajax/bishant.nayak44@gmail.com", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          name: fullName,
-          email: email,
-          message: message,
-          _subject: "Website Enquiry: " + subject,
-          _template: "table",
-          _captcha: "false",
-        }),
-      })
-        .then(function (resp) {
-          if (!resp.ok) {
-            throw new Error("Network response was not ok");
+      if ($captchaRefresh.length) {
+        $captchaRefresh.on("click", function () {
+          generateCaptcha();
+          if ($captchaAnswer.length) {
+            $captchaAnswer.trigger("focus");
           }
-          return resp.json();
-        })
-        .then(function () {
-          showToast("Message sent successfully!", false);
-          $form[0].reset();
-          generateCaptcha();
-        })
-        .catch(function (err) {
-          console.error("Email send failed", err);
-          showToast("Unable to send message. Please try again later.", true);
-          generateCaptcha();
-        })
-        .finally(function () {
-          $submit.prop("disabled", false).text("Send Message");
         });
+      }
+
+      var readVal = function ($field) {
+        return $field.length ? $.trim($field.val() || "") : "";
+      };
+
+      $form.on("submit", function (evt) {
+        evt.preventDefault();
+
+        var firstName = readVal($firstName);
+        var lastName = readVal($lastName);
+        var email = readVal($email);
+        var subject = readVal($subject) || "New Contact Inquiry";
+        var message = readVal($message);
+        var captchaResponse = $captchaAnswer.length
+          ? $.trim($captchaAnswer.val())
+          : "";
+
+        if (!firstName || !lastName || !email || !message) {
+          showToast("Please fill in all required fields.", true);
+          return;
+        }
+
+        if ($captchaQuestion.length) {
+          var parsedCaptcha = parseInt(captchaResponse, 10);
+          if (
+            !captchaResponse ||
+            isNaN(parsedCaptcha) ||
+            parsedCaptcha !== captchaSolution
+          ) {
+            showToast("Captcha answer is incorrect. Please try again.", true);
+            generateCaptcha();
+            return;
+          }
+        }
+
+        var fullName = $.trim(firstName + " " + lastName);
+
+        $submit.prop("disabled", true).text("Sending...");
+
+        fetch("https://formsubmit.co/ajax/fairdeal.asset@gmail.com", {
+          //   fetch("https://formsubmit.co/ajax/bishant.nayak44@gmail.com", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name: fullName,
+            email: email,
+            message: message,
+            _subject: "Website Enquiry: " + subject,
+            _template: "table",
+            _captcha: "false",
+          }),
+        })
+          .then(function (resp) {
+            if (!resp.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return resp.json();
+          })
+          .then(function () {
+            showToast("Message sent successfully!", false);
+            $form[0].reset();
+            generateCaptcha();
+          })
+          .catch(function (err) {
+            console.error("Email send failed", err);
+            showToast("Unable to send message. Please try again later.", true);
+            generateCaptcha();
+          })
+          .finally(function () {
+            $submit.prop("disabled", false).text(submitText);
+          });
+      });
+    };
+
+    $forms.each(function () {
+      initContactForm($(this));
     });
   })();
 
   // Render gallery items from generated manifest
-  (function(){
+  (function () {
     var data = window.FD_GALLERY_IMAGES || [];
     if (!data.length) return;
 
-    var escapeAttr = function(str){
-      return String(str || '')
-        .replace(/&/g, '&amp;')
-        .replace(/"/g, '&quot;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+    var escapeAttr = function (str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
     };
 
-    var createItem = function(item){
-      var src = item && item.src ? item.src : '';
-      if (!src) return '';
-      var caption = item && item.caption ? item.caption : 'Property gallery image';
+    var createItem = function (item) {
+      var src = item && item.src ? item.src : "";
+      if (!src) return "";
+      var caption =
+        item && item.caption ? item.caption : "Property gallery image";
       var safeCaption = escapeAttr(caption);
       var safeSrc = escapeAttr(src);
       return (
         '<div class="gallery-item">' +
-          '<button type="button" class="gallery-link" data-image="' + safeSrc + '" data-caption="' + safeCaption + '">' +
-            '<img src="' + safeSrc + '" alt="' + safeCaption + '" loading="lazy" decoding="async">' +
-          '</button>' +
-        '</div>'
+        '<button type="button" class="gallery-link" data-image="' +
+        safeSrc +
+        '" data-caption="' +
+        safeCaption +
+        '">' +
+        '<img src="' +
+        safeSrc +
+        '" alt="' +
+        safeCaption +
+        '" loading="lazy" decoding="async">' +
+        "</button>" +
+        "</div>"
       );
     };
 
-    var sizeClasses = ['small','tall','wide','big'];
-    var sizePattern = ['big','tall','wide','small','small','tall','small','wide','small'];
+    var sizeClasses = ["small", "tall", "wide", "big"];
+    var sizePattern = [
+      "big",
+      "tall",
+      "wide",
+      "small",
+      "small",
+      "tall",
+      "small",
+      "wide",
+      "small",
+    ];
 
-    $('[data-gallery-limit]').each(function(){
+    $("[data-gallery-limit]").each(function () {
       var $grid = $(this);
-      var limit = parseInt($grid.data('gallery-limit'), 10);
+      var limit = parseInt($grid.data("gallery-limit"), 10);
       if (isNaN(limit) || limit <= 0) limit = data.length;
-      var html = data.slice(0, limit).map(createItem).join('');
+      var html = data.slice(0, limit).map(createItem).join("");
       $grid.html(html);
 
       var offset = Math.floor(Math.random() * sizePattern.length);
-      var rotated = sizePattern.slice(offset).concat(sizePattern.slice(0, offset));
-      if (!rotated.length) rotated = ['small'];
-      $grid.find('.gallery-item').each(function(i){
+      var rotated = sizePattern
+        .slice(offset)
+        .concat(sizePattern.slice(0, offset));
+      if (!rotated.length) rotated = ["small"];
+      $grid.find(".gallery-item").each(function (i) {
         var cls = rotated[i % rotated.length];
-        $(this).removeClass(sizeClasses.join(' ')).addClass(cls);
+        $(this).removeClass(sizeClasses.join(" ")).addClass(cls);
       });
     });
   })();
 
   // Gallery modal viewer
-  (function(){
-    var $modal = $('#fdGalleryModal');
+  (function () {
+    var $modal = $("#fdGalleryModal");
     if (!$modal.length) return;
-    var $image = $('#fdGalleryImage');
-    var $caption = $('#fdGalleryCaption');
+    var $image = $("#fdGalleryImage");
+    var $caption = $("#fdGalleryCaption");
 
-    var openModal = function(src, caption){
-      $image.attr('src', src || '').attr('alt', caption || 'Gallery image');
-      $caption.text(caption || '');
-      $modal.removeAttr('hidden').addClass('is-visible');
-      $('body').addClass('overflow-hidden');
+    var openModal = function (src, caption) {
+      $image.attr("src", src || "").attr("alt", caption || "Gallery image");
+      $caption.text(caption || "");
+      $modal.removeAttr("hidden").addClass("is-visible");
+      $("body").addClass("overflow-hidden");
     };
 
-    var closeModal = function(){
-      $modal.attr('hidden', true).removeClass('is-visible');
-      $image.attr('src', '');
-      $caption.text('');
-      $('body').removeClass('overflow-hidden');
+    var closeModal = function () {
+      $modal.attr("hidden", true).removeClass("is-visible");
+      $image.attr("src", "");
+      $caption.text("");
+      $("body").removeClass("overflow-hidden");
     };
 
-    $(document).on('click', '.gallery-link', function(){
+    $(document).on("click", ".gallery-link", function () {
       var $btn = $(this);
-      var src = $btn.data('image');
-      var caption = $btn.data('caption');
-      if (src){
+      var src = $btn.data("image");
+      var caption = $btn.data("caption");
+      if (src) {
         openModal(src, caption);
       }
     });
 
-    $modal.on('click', '[data-close]', function(){
+    $modal.on("click", "[data-close]", function () {
       closeModal();
     });
 
-    $(document).on('keydown', function(evt){
-      if ($modal.is(':hidden')) return;
-      if (evt.key === 'Escape'){ closeModal(); }
+    $(document).on("keydown", function (evt) {
+      if ($modal.is(":hidden")) return;
+      if (evt.key === "Escape") {
+        closeModal();
+      }
     });
   })();
 

@@ -2046,19 +2046,26 @@ h5,
   right: 24px;
   left: auto;
   bottom: auto;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 32px;
   display: inline-flex;
   gap: 8px;
   padding: 8px 14px;
-  -webkit-transform: translateY(-140%);
-  -ms-transform: translateY(-140%);
-  transform: translateY(-140%);
+  -webkit-transform: translateY(-180%);
+  -ms-transform: translateY(-180%);
+  transform: translateY(-180%);
   background: rgba(11, 42, 91, 0.88);
 }
+
 .founder-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 26px 55px rgba(11, 42, 91, 0.12);
 }
+
 .founder-card:hover .social {
   -webkit-transform: translateY(0%);
   -ms-transform: translateY(0%);
