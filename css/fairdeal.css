@@ -510,7 +510,8 @@ body.fd-modal-open{ overflow:hidden; }
   .advantage-check{ animation:none; }
   .fd-whatsapp-fab,
   .fd-contact-modal,
-  .fd-contact-modal__dialog{ transition:none; }
+  .fd-contact-modal__dialog,
+  .fd-lead-slidein{ transition:none; }
   .expertise-grid .unit-4{
     transform:none;
   }
@@ -562,6 +563,26 @@ img.mfp-img{ border-radius: 14px; }
 /* Hero content centering helpers */
 .site-blocks-cover > .container > .row{ align-items:center !important; justify-content:center !important; }
 
+/* Hero CTA group */
+.hero-cta-group{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:8px;
+}
+.hero-cta-group .btn{ min-width:160px; }
+.hero-cta-group .btn-outline-primary{
+  color:#fff !important;
+  border-color:rgba(212,175,55,.9) !important;
+  background:rgba(11,42,91,.25) !important;
+}
+.hero-cta-group .btn-outline-primary:hover,
+.hero-cta-group .btn-outline-primary:focus{
+  background:linear-gradient(135deg, var(--fd-gold), var(--fd-amber)) !important;
+  color:var(--fd-indigo) !important;
+}
+
 /* Testimonials – mobile readability and interaction */
 .testimonial-wrap-1 {
   display: flex;
@@ -580,6 +601,115 @@ img.mfp-img{ border-radius: 14px; }
 /* Gallery – responsive tweaks */
 @media (max-width: 575.98px){
   .gallery-grid{ grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:10px; }
+}
+
+/* Lead magnet section */
+.fd-lead-section{
+  position:relative;
+  overflow:hidden;
+}
+.fd-lead-section .container{
+  position:relative;
+  z-index:1;
+}
+.fd-lead-section::before{
+  content:"";
+  position:absolute;
+  inset:-30% 40% auto -20%;
+  height:280px;
+  background:radial-gradient(circle, rgba(212,175,55,.22), rgba(212,175,55,0) 70%);
+  pointer-events:none;
+}
+.fd-lead-section::after{
+  content:"";
+  position:absolute;
+  right:-10%;
+  bottom:-20%;
+  width:320px;
+  height:320px;
+  background:radial-gradient(circle, rgba(11,42,91,.16), rgba(11,42,91,0) 70%);
+  pointer-events:none;
+}
+.fd-eyebrow{
+  display:inline-block;
+  text-transform:uppercase;
+  letter-spacing:.25em;
+  font-size:.72rem;
+  color:rgba(11,42,91,.55);
+  margin-bottom:10px;
+}
+.fd-lead-card{
+  background:#fff;
+  border-radius:18px;
+  padding:28px;
+  border:1px solid rgba(11,42,91,.08);
+  box-shadow:0 18px 40px rgba(11,42,91,.12);
+  position:relative;
+  z-index:1;
+}
+.fd-lead-card .form-control{ border-radius:10px; }
+
+/* Lead magnet slide-in */
+.fd-lead-slidein{
+  position:fixed;
+  left:24px;
+  bottom:24px;
+  width:320px;
+  background:#fff;
+  border-radius:16px;
+  border:1px solid rgba(11,42,91,.08);
+  box-shadow:0 18px 40px rgba(11,42,91,.18);
+  padding:18px;
+  z-index:1085;
+  opacity:0;
+  transform:translateY(18px);
+  pointer-events:none;
+  transition:opacity .3s ease, transform .3s ease;
+}
+.fd-lead-slidein.is-visible{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+.fd-lead-slidein__close{
+  position:absolute;
+  top:10px;
+  right:10px;
+  border:none;
+  background:rgba(11,42,91,.08);
+  color:var(--fd-blue);
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  cursor:pointer;
+  line-height:1;
+}
+.fd-lead-slidein h4{
+  font-size:1.05rem;
+  margin-bottom:8px;
+  color:var(--fd-blue);
+}
+.fd-lead-slidein p{
+  font-size:.9rem;
+  color:#51617a;
+  margin-bottom:12px;
+}
+.fd-lead-slidein .form-control{
+  height:44px;
+  border-radius:10px;
+}
+.fd-lead-slidein .btn{
+  width:100%;
+  justify-content:center;
+}
+
+@media (max-width: 575.98px){
+  .fd-lead-slidein{
+    left:12px;
+    right:12px;
+    width:auto;
+    bottom:84px;
+  }
 }
 
 /* Listing refinements */

@@ -509,6 +509,11 @@ jQuery(document).ready(function ($) {
       }
     };
 
+    $(document).on("click", "[data-fd-open-modal]", function (evt) {
+      evt.preventDefault();
+      openModal();
+    });
+
     $modal.on("click", "[data-fd-modal-close]", function () {
       closeModal();
     });
@@ -709,6 +714,194 @@ jQuery(document).ready(function ($) {
 
     $forms.each(function () {
       initContactForm($(this));
+    });
+  })();
+
+  // Lead magnet slide-in + newsletter capture
+  (function () {
+    var $body = $("body");
+
+    if (!$(".fd-lead-slidein").length) {
+      var slideInHtml = [
+        '<div class="fd-lead-slidein" aria-live="polite">',
+        '<button type="button" class="fd-lead-slidein__close" aria-label="Close lead form" data-fd-lead-close>&times;</button>',
+        "<h4>Get the Bhubaneswar Market Report</h4>",
+        "<p>Request pricing benchmarks and approval checklists in 60 seconds.</p>",
+        '<form data-fd-lead-form data-fd-lead-name="Market Report Slide-in" data-fd-success-message="Thanks! The report is on the way.">',
+        '<div class="form-group">',
+        '<label class="sr-only" for="slideInEmail">Email</label>',
+        '<input type="email" id="slideInEmail" name="email" class="form-control" placeholder="Email address" autocomplete="email" required>',
+        "</div>",
+        '<input type="hidden" name="leadSource" value="Market Report Slide-in">',
+        '<button type="submit" class="btn btn-primary btn-sm" data-fd-submit>Send Me the Report</button>',
+        "</form>",
+        "</div>",
+      ].join("");
+      $body.append(slideInHtml);
+    }
+
+    var $slidein = $(".fd-lead-slidein");
+    var storageKey = "fdLeadSlideinDismissed";
+    var wasDismissed = false;
+
+    try {
+      wasDismissed = window.sessionStorage.getItem(storageKey) === "1";
+    } catch (err) {
+      wasDismissed = false;
+    }
+
+    var showSlidein = function () {
+      if (!$slidein.length || wasDismissed) return;
+      $slidein.addClass("is-visible");
+    };
+
+    var hideSlidein = function () {
+      if (!$slidein.length) return;
+      $slidein.removeClass("is-visible");
+      try {
+        window.sessionStorage.setItem(storageKey, "1");
+        wasDismissed = true;
+      } catch (err) {}
+    };
+
+    $slidein.on("click", "[data-fd-lead-close]", function () {
+      hideSlidein();
+    });
+
+    if ($slidein.length && !wasDismissed) {
+      setTimeout(function () {
+        if ($(".fd-contact-modal").hasClass("is-visible")) return;
+        showSlidein();
+      }, 4200);
+    }
+
+    var getToast = function () {
+      var $toast = $("#fdToast");
+      if (!$toast.length) {
+        $toast = $(
+          '<div id="fdToast" class="fd-toast" role="status" aria-live="polite" aria-hidden="true"></div>'
+        );
+        $("body").append($toast);
+      }
+      return $toast;
+    };
+
+    var showToast = function (message, isError) {
+      var $toast = getToast();
+      if (!$toast.length) return;
+      $toast.text(message);
+      $toast.toggleClass("is-error", !!isError);
+      $toast.addClass("is-visible").attr("aria-hidden", "false");
+      clearTimeout($toast.data("timeoutId"));
+      var timeoutId = setTimeout(function () {
+        $toast.removeClass("is-visible");
+        setTimeout(function () {
+          $toast.attr("aria-hidden", "true");
+        }, 300);
+      }, 4000);
+      $toast.data("timeoutId", timeoutId);
+    };
+
+    var initLeadForm = function ($form) {
+      var $submit = $form.find("[data-fd-submit]");
+      if (!$submit.length) {
+        $submit = $form.find("button[type='submit']");
+      }
+      if (!$submit.length) return;
+
+      var submitText = $.trim($submit.text()) || "Submit";
+      var leadName =
+        $form.data("fdLeadName") || $form.data("fd-lead-name") || "Website Lead";
+      var successMessage =
+        $form.data("fdSuccessMessage") ||
+        "Thanks! We'll be in touch shortly.";
+
+      var findField = function (name) {
+        var $field = $form.find('[data-fd-field="' + name + '"]');
+        if (!$field.length) {
+          $field = $form.find('[name="' + name + '"]');
+        }
+        return $field;
+      };
+
+      var $name = findField("name");
+      var $email = findField("email");
+      var $phone = findField("phone");
+      var $source = findField("leadSource");
+
+      var readVal = function ($field) {
+        return $field.length ? $.trim($field.val() || "") : "";
+      };
+
+      $form.on("submit", function (evt) {
+        evt.preventDefault();
+
+        var name = readVal($name) || "Subscriber";
+        var email = readVal($email);
+        var phone = readVal($phone);
+        var leadSource = readVal($source) || "Website";
+
+        if (!email) {
+          showToast("Please enter a valid email address.", true);
+          return;
+        }
+
+        var messageParts = [
+          "Lead: " + leadName,
+          "Name: " + name,
+          "Email: " + email,
+          "Source: " + leadSource,
+        ];
+
+        if (phone) {
+          messageParts.push("Phone: " + phone);
+        }
+
+        $submit.prop("disabled", true).text("Sending...");
+
+        fetch("https://formsubmit.co/ajax/fairdeal.asset@gmail.com", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            message: messageParts.join("\n"),
+            _subject: "Website Lead: " + leadName,
+            _template: "table",
+            _captcha: "false",
+          }),
+        })
+          .then(function (resp) {
+            if (!resp.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return resp.json();
+          })
+          .then(function () {
+            showToast(successMessage, false);
+            $form[0].reset();
+            if ($form.closest(".fd-lead-slidein").length) {
+              hideSlidein();
+            }
+          })
+          .catch(function (err) {
+            console.error("Lead send failed", err);
+            showToast(
+              "Unable to send right now. Please try again later.",
+              true
+            );
+          })
+          .finally(function () {
+            $submit.prop("disabled", false).text(submitText);
+          });
+      });
+    };
+
+    $("[data-fd-lead-form], [data-fd-newsletter-form]").each(function () {
+      initLeadForm($(this));
     });
   })();
 
