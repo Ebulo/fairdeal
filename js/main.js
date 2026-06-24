@@ -323,13 +323,18 @@ jQuery(document).ready(function ($) {
       "click",
       ".main-menu li a[href^='#'], .smoothscroll[href^='#'], .site-mobile-menu .site-nav-wrap li a",
       function (e) {
-        e.preventDefault();
-
         var hash = this.hash;
+        var $target = hash ? $(hash) : $();
+
+        if (!hash || !$target.length) {
+          return;
+        }
+
+        e.preventDefault();
 
         $("html, body").animate(
           {
-            scrollTop: $(hash).offset().top,
+            scrollTop: $target.offset().top,
           },
           600,
           "easeInOutCirc",
