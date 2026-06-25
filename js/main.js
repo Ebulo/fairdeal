@@ -72,9 +72,11 @@ jQuery(document).ready(function ($) {
       if ($("body").hasClass("offcanvas-menu")) {
         $("body").removeClass("offcanvas-menu");
         $this.removeClass("active");
+        $this.attr("aria-expanded", "false");
       } else {
         $("body").addClass("offcanvas-menu");
         $this.addClass("active");
+        $this.attr("aria-expanded", "true");
       }
     });
 
@@ -84,6 +86,7 @@ jQuery(document).ready(function ($) {
       if (!container.is(e.target) && container.has(e.target).length === 0) {
         if ($("body").hasClass("offcanvas-menu")) {
           $("body").removeClass("offcanvas-menu");
+          $(".js-menu-toggle").removeClass("active").attr("aria-expanded", "false");
         }
       }
     });
@@ -331,6 +334,8 @@ jQuery(document).ready(function ($) {
         }
 
         e.preventDefault();
+        $("body").removeClass("offcanvas-menu");
+        navToggler.removeClass("active").attr("aria-expanded", "false");
 
         $("html, body").animate(
           {
@@ -354,8 +359,7 @@ jQuery(document).ready(function ($) {
     if (!$nav.length) return;
 
     var getThreshold = function () {
-      // return Math.max(window.innerHeight || 0, $win.height() || 0);
-      return $win.height() * 0.2;
+      return 96;
     };
 
     var applyNavState = function () {
@@ -370,6 +374,107 @@ jQuery(document).ready(function ($) {
     applyNavState();
   };
   siteScroll();
+
+  var fdHeroParallax = function () {
+    var stage = document.querySelector("[data-fd-hero-parallax]");
+    if (!stage) return;
+
+    var hero = stage.closest(".fd-hero-modern");
+    if (!hero) return;
+
+    var copy = stage.querySelector("[data-fd-hero-copy]");
+    var bg = stage.querySelector(".fd-hero-modern__bg");
+    var building = stage.querySelector("[data-fd-hero-building]");
+    var heroClouds = stage.querySelector("[data-fd-hero-clouds]");
+    var sectionClouds = document.querySelector("[data-fd-section-clouds]");
+    var reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    var ticking = false;
+
+    var clamp = function (value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    };
+
+    var setTransform = function (element, value) {
+      if (element) element.style.transform = value;
+    };
+
+    var setOpacity = function (element, value) {
+      if (element) element.style.opacity = value;
+    };
+
+    var apply = function () {
+      ticking = false;
+
+      var rect = hero.getBoundingClientRect();
+      var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      var travel = Math.max(1, hero.offsetHeight - viewportHeight);
+      var progress = reduceMotion ? 0 : clamp(-rect.top / travel, 0, 1);
+      var copyLift = -progress * 76;
+      var copyScale = 1 - progress * 0.24;
+      var buildingLift = -progress * viewportHeight * 0.18;
+      var bgLift = -progress * viewportHeight * 0.045;
+      var bgScale = 1.02 + progress * 0.035;
+      var cloudLift = -progress * viewportHeight * 0.06;
+      var cloudScale = 1 + progress * 0.025;
+      var sectionCloudLift = -progress * viewportHeight * 0.02;
+
+      setTransform(
+        copy,
+        "translate3d(0, " +
+          copyLift.toFixed(2) +
+          "px, 0) scale(" +
+          copyScale.toFixed(3) +
+          ")"
+      );
+      setOpacity(copy, (1 - progress * 0.62).toFixed(3));
+      if (copy) copy.style.filter = "blur(" + (progress * 1.2).toFixed(2) + "px)";
+
+      setTransform(
+        bg,
+        "translate3d(0, " +
+          bgLift.toFixed(2) +
+          "px, 0) scale(" +
+          bgScale.toFixed(3) +
+          ")"
+      );
+      setTransform(
+        building,
+          "translate3d(-50%, " +
+          buildingLift.toFixed(2) +
+          "px, 0) scale(" +
+          (1 + progress * 0.035).toFixed(3) +
+          ")"
+      );
+      setTransform(
+        heroClouds,
+        "translate3d(-50%, " +
+          cloudLift.toFixed(2) +
+          "px, 0) scale(" +
+          cloudScale.toFixed(3) +
+          ")"
+      );
+      setOpacity(heroClouds, (0.72 + progress * 0.14).toFixed(3));
+      setTransform(
+        sectionClouds,
+        "translate3d(-50%, " + sectionCloudLift.toFixed(2) + "px, 0)"
+      );
+    };
+
+    var requestTick = function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(apply);
+    };
+
+    window.addEventListener("scroll", requestTick, { passive: true });
+    window.addEventListener("resize", requestTick);
+    window.addEventListener("orientationchange", requestTick);
+    window.addEventListener("load", requestTick);
+    apply();
+  };
+  fdHeroParallax();
 
   // Button ripple effect (skips if reduced motion)
   var allowMotion = !window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -540,9 +645,7 @@ jQuery(document).ready(function ($) {
       }
     });
 
-    $(window).on("load", function () {
-      setTimeout(openModal, 700);
-    });
+    // Keep the refreshed hero calm: contact opens from explicit CTAs only.
   })();
 
   // Contact form email handling
@@ -936,12 +1039,14 @@ jQuery(document).ready(function ($) {
         safeSrc +
         '" data-caption="' +
         safeCaption +
-        '">' +
+        '" style="background-image:url(\'' +
+        safeSrc +
+        "')\">" +
         '<img src="' +
         safeSrc +
         '" alt="' +
         safeCaption +
-        '" loading="lazy" decoding="async">' +
+        '" loading="eager" decoding="async">' +
         "</button>" +
         "</div>"
       );

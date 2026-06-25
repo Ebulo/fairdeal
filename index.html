@@ -41,7 +41,9 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="dns-prefetch" href="//formsubmit.co">
     <link rel="preconnect" href="https://formsubmit.co" crossorigin>
-    <link rel="preload" href="videos/hero_vdo.mp4" as="video" type="video/mp4">
+    <link rel="preload" href="images/hero_bg-el0.png" as="image" type="image/png">
+    <link rel="preload" href="images/hero_bg-el1.png" as="image" type="image/png">
+    <link rel="preload" href="images/hero_bg-cloud.png" as="image" type="image/png">
     <link rel="preload" href="fonts/icomoon/fonts/icomoon.woff" as="font" type="font/woff" crossorigin>
     <meta property="og:type" content="website">
     <meta property="og:locale" content="en_IN">
@@ -317,31 +319,31 @@
       <div class="container">
         <div class="row align-items-center">
           
-          <div class="col-6 col-xl-2">
+          <div class="col-6 col-xl-2 fd-nav-logo-col">
             <!-- <h1 class="mb-0 site-logo m-0 p-0"><a href="index.html" class="mb-0">Fairdeal.</a></h1> -->
-             <a href="index.html">
+             <a href="index.html" class="fd-site-nav__logo" aria-label="Fairdeal Assets home">
               <img src="images/logo.png" width="110" height="110" alt="Fairdeal Assets Logo" class="img-fluid" decoding="async" fetchpriority="high">
              </a>
           </div>
 
-          <div class="col-12 col-md-10 d-none d-xl-block">
+          <div class="col-12 col-md-10 d-none d-xl-block fd-nav-menu-col">
             <nav class="site-navigation position-relative text-right" role="navigation">
 
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                <li><a href="#home-section" class="nav-link">Home</a></li>
+                <li><a href="#gallery-section" class="nav-link">Properties</a></li>
+                <li><a href="#services-section" class="nav-link">Services</a></li>
                 <li><a href="#about-section" class="nav-link">About</a></li>
-                <li><a href="#services-section" class="nav-link">Expertise</a></li>
-                <li><a href="#testimonials-section" class="nav-link">Testimonials</a></li>
-                <li><a href="#lead-section" class="nav-link">Market Report</a></li>
                 <li><a href="https://accademy.fairdealassets.com/" class="nav-link">Academy</a></li>
-                <li><a href="#gallery-section" class="nav-link">Gallery</a></li>
-                <li><a href="#contact-section" class="nav-link">Contact</a></li>
+                <li class="fd-mobile-nav-cta"><a href="#contact-section" class="nav-link" data-fd-open-modal>Contact us</a></li>
               </ul>
             </nav>
           </div>
 
+          <div class="d-none d-xl-flex fd-nav-cta-col">
+            <a href="#contact-section" class="fd-site-nav__cta" data-fd-open-modal>Contact us</a>
+          </div>
 
-          <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-black float-right"><span class="icon-menu h3"></span></a></div>
+          <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3 fd-nav-toggle-col"><a href="#" class="site-menu-toggle js-menu-toggle text-black float-right" aria-label="Toggle navigation menu" aria-expanded="false"><span></span><span></span><span></span></a></div>
 
         </div>
       </div>
@@ -349,38 +351,57 @@
     </header>
 
     
-    <div class="site-blocks-cover overlay" data-aos="fade" id="home-section">
+    <div class="site-blocks-cover fd-hero-modern" data-aos="fade" id="home-section">
+      <div class="fd-hero-modern__stage" data-fd-hero-parallax>
+        <img class="fd-hero-modern__bg" src="images/hero_bg-el0.png" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
+        <div class="fd-hero-modern__sky" aria-hidden="true"></div>
+        <div class="fd-hero-modern__mist fd-hero-modern__mist--back" aria-hidden="true"></div>
 
-      <video class="bg-video" autoplay muted loop playsinline preload="auto" poster="images/hero_1.jpg" aria-hidden="true" tabindex="-1">
-        <source src="videos/hero_vdo.mp4" type="video/mp4">
-      </video>
-
-
-      <div class="container">
-        <div class="row align-items-center justify-content-center">
-          <div class="col-md-9 mt-lg-5 text-center">
-            <h1 data-aos="fade-up" data-aos-delay="50">Crafting assets, Cultivating Trust</h1>
-            <p class="lead mb-4" data-aos="fade-up" data-aos-delay="150">Fairdeal Assets bridges property owners, buyers, and authorities across Bhubaneswar and Odisha so every approval and transaction stays smooth and transparent.</p>
-            <p class="mb-4" data-aos="fade-up" data-aos-delay="190">Looking to buy property in Bhubaneswar? Our Odisha real estate consultants guide pricing, documentation, and site visits end to end.</p>
-            <div class="hero-cta-group" data-aos="fade-up" data-aos-delay="230">
-              <a href="#contact-section" class="btn btn-primary mr-2 mb-2" data-fd-open-modal>Get Price</a>
-              <a href="#contact-section" class="btn btn-outline-primary mb-2 smoothscroll">Schedule Visit</a>
+        <div class="container fd-hero-modern__container">
+          <div class="fd-hero-modern__copy text-center" data-fd-hero-copy>
+            <div class="fd-hero-users" data-aos="fade-up" data-aos-delay="40">
+              <span class="fd-hero-users__faces" aria-hidden="true">
+                <img src="images/members/member1.jpg" alt="" loading="eager" decoding="async">
+                <img src="images/members/member2.jpg" alt="" loading="eager" decoding="async">
+                <img src="images/icons/android-chrome-192x192.png" alt="" loading="eager" decoding="async">
+              </span>
+              <span>3,500+ property decisions guided</span>
             </div>
-            <p data-aos="fade-up" data-aos-delay="280">Write to us at <a href="mailto:fairdeal.asset@gmail.com?subject=Real%20Estate%20Services%20Inquiry&body=Hello%20Fairdeal%20Assets%2C%0A%0AI%20would%20like%20to%20discuss%20my%20property%20requirements%20and%20the%20approvals%20needed.%20Please%20reach%20out%20with%20the%20next%20steps.%0A%0AThank%20you." class="hero-email">fairdeal.asset@gmail.com</a> to get your project moving.</p>
+            <h1 data-aos="fade-up" data-aos-delay="90">Find Your Dream Property</h1>
+            <p class="lead" data-aos="fade-up" data-aos-delay="150">Explore verified homes, plots, approvals, and advisory support across Bhubaneswar and Odisha with clarity before every commitment.</p>
+            <div class="hero-cta-group" data-aos="fade-up" data-aos-delay="210">
+              <a href="#gallery-section" class="btn btn-primary btn-hero smoothscroll">Explore Properties <span class="icon-arrow_forward" aria-hidden="true"></span></a>
+              <a href="#contact-section" class="btn btn-outline-primary btn-hero smoothscroll">Book a Visit</a>
+            </div>
           </div>
         </div>
-      </div>
 
-      <a href="#values-section" class="smoothscroll arrow-down"><span class="icon-arrow_downward"></span></a>
+        <img class="fd-hero-modern__building" src="images/hero_bg-el1.png" alt="Modern luxury residence with glass terraces and warm interior lights" decoding="async" fetchpriority="high" data-fd-hero-building>
+        <img class="fd-hero-modern__clouds fd-hero-modern__clouds--hero" src="images/hero_bg-cloud.png" alt="" aria-hidden="true" decoding="async" data-fd-hero-clouds>
+        <div class="fd-hero-modern__mist fd-hero-modern__mist--front" aria-hidden="true"></div>
+        <a href="#values-section" class="smoothscroll arrow-down" aria-label="Scroll to core values"><span class="icon-arrow_downward"></span></a>
+      </div>
     </div>  
 
     
     <div class="py-5 bg-light site-section how-it-works" id="values-section" data-aos="fade-up">
+      <img class="fd-section-clouds" src="images/hero_bg-cloud.png" alt="" aria-hidden="true" decoding="async" data-fd-section-clouds>
       <div class="container">
-        <div class="row mb-5 justify-content-center">
-          <div class="col-md-7 text-center">
-            <h2 class="section-title mb-3">Core Values</h2>
+        <div class="row mb-5 align-items-end">
+          <div class="col-lg-7">
+            <span class="fd-eyebrow">Our Impact</span>
+            <h2 class="section-title mb-3">Core values behind every property decision</h2>
+            <p class="lead mb-0">Built to make modern real estate decisions simple, transparent, and more confident for every buyer, owner, and investor.</p>
           </div>
+          <div class="col-lg-4 ml-auto mt-4 mt-lg-0">
+            <div class="fd-impact-stat">
+              <strong>₹45Cr+</strong>
+              <span>transaction value coordinated through advisory, approvals, and property support</span>
+            </div>
+          </div>
+        </div>
+        <div class="fd-impact-image mb-5">
+          <img src="images/property/30.webp" alt="Modern residential development supported by Fairdeal Assets" loading="eager" decoding="async">
         </div>
         <div class="row">
           <div class="col-md-4 text-center">
@@ -527,18 +548,13 @@
         <div class="row">
           <div class="col-lg-6">
 
-            <div class="carousel-shell">
-              <div class="owl-carousel slide-one-item-alt">
-                <img src="images/property_1.jpg" alt="Approved residential tower liaisoned by Fairdeal Assets" class="img-fluid" loading="lazy" decoding="async">
-                <img src="images/property_2.jpg" alt="Commercial complex coordinated with Odisha authorities" class="img-fluid" loading="lazy" decoding="async">
-                <img src="images/property_3.jpg" alt="Real estate development supported through Fairdeal documentation" class="img-fluid" loading="lazy" decoding="async">
-                <img src="images/property_4.jpg" alt="Luxury apartment skyline showcasing Fairdeal Assets expertise" class="img-fluid" loading="lazy" decoding="async">
-              </div>
-              <div class="custom-direction">
-                <a href="#" class="custom-prev" aria-label="Previous slide"><span class="icon-keyboard_arrow_left"></span></a>
-                <a href="#" class="custom-next" aria-label="Next slide"><span class="icon-keyboard_arrow_right"></span></a>
-              </div>
-            </div>
+            <figure class="fd-about-visual">
+              <img src="images/property_1.jpg" alt="Approved residential property supported by Fairdeal Assets" loading="eager" decoding="async">
+              <figcaption>
+                <strong>Verified property support</strong>
+                <span>Approvals, documentation, and investment clarity coordinated end to end.</span>
+              </figcaption>
+            </figure>
 
           </div>
           <div class="col-lg-5 ml-auto">
@@ -724,21 +740,21 @@
         <div class="row">
           <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
             <div class="h-entry">
-              <a href="single.html"><img src="images/property_1.jpg" alt="Government liaisoning" class="img-fluid" loading="lazy" decoding="async"></a>
+              <a href="single.html" style="background-image:url('images/property_1.jpg')"><img src="images/property_1.jpg" alt="Government liaisoning" class="img-fluid" loading="eager" decoding="async"></a>
               <h2 class="font-size-regular"><a href="single.html" class="text-dark">RERA compliance made effortless</a></h2>
               <p>Guiding developers through registrations, extensions, and reporting to keep every project market-ready.</p>
             </div> 
           </div>
           <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
             <div class="h-entry">
-              <a href="single.html"><img src="images/property_2.jpg" alt="Construction support" class="img-fluid" loading="lazy" decoding="async"></a>
+              <a href="single.html" style="background-image:url('images/property_2.jpg')"><img src="images/property_2.jpg" alt="Construction support" class="img-fluid" loading="eager" decoding="async"></a>
               <h2 class="font-size-regular"><a href="single.html" class="text-dark">Coordinated approvals for faster launches</a></h2>
               <p>From land conversion to building permits, we fast-track clearances with proactive follow-ups.</p>
             </div>
           </div>
           <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
             <div class="h-entry">
-              <a href="single.html"><img src="images/property_3.jpg" alt="Investment advisory" class="img-fluid" loading="lazy" decoding="async"></a>
+              <a href="single.html" style="background-image:url('images/property_3.jpg')"><img src="images/property_3.jpg" alt="Investment advisory" class="img-fluid" loading="eager" decoding="async"></a>
               <h2 class="font-size-regular"><a href="single.html" class="text-dark">Consulting for high-value assets</a></h2>
               <p>We evaluate prime plots, conduct due diligence, and craft investment strategies for long-term gains.</p>
             </div> 
