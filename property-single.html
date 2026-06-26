@@ -40,7 +40,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://formsubmit.co" crossorigin>
     <link rel="preload" href="fonts/icomoon/fonts/icomoon.woff" as="font" type="font/woff" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fonts/icomoon/style.css">
 
     <meta property="og:type" content="product">
@@ -67,12 +67,11 @@
     <meta name="twitter:image:alt" content="Sampark Heights apartments in Bhubaneswar">
     <meta name="twitter:url" content="https://fairdealassets.com/property-single.html">
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/native.css">
     <link rel="stylesheet" href="css/jquery-ui.css">
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/jquery.fancybox.min.css">
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
     <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
     <link rel="stylesheet" href="css/aos.css">
     <link rel="stylesheet" href="css/style.css">
@@ -152,7 +151,7 @@
     </script>
     
   </head>
-  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+  <body>
   
   <div class="site-wrap">
 
@@ -171,30 +170,33 @@
       <div class="container">
         <div class="row align-items-center">
           
-          <div class="col-6 col-xl-2">
+          <div class="col-6 col-xl-2 fd-nav-logo-col">
             <!-- <h1 class="mb-0 site-logo m-0 p-0"><a href="index.html" class="mb-0">Stated.</a></h1> -->
-             <a href="index.html">
-              <img src="images/logo.png" width="100" height="100" alt="Fairdeal Assets Logo" class="img-fluid" decoding="async" fetchpriority="high">
+             <a href="index.html" class="fd-site-nav__logo" aria-label="Fairdeal Assets home">
+              <img src="images/logo.png" width="110" height="110" alt="Fairdeal Assets Logo" class="img-fluid" decoding="async" fetchpriority="high">
              </a>
           </div>
 
-          <div class="col-12 col-md-10 d-none d-xl-block">
+          <div class="col-12 col-md-10 d-none d-xl-block fd-nav-menu-col">
             <nav class="site-navigation position-relative text-right" role="navigation">
 
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                <li><a href="index.html#home-section" class="nav-link">Home</a></li>
-                <li><a href="index.html#about-section" class="nav-link">About</a></li>
+                <li><a href="index.html#gallery-section" class="nav-link">Properties</a></li>
                 <li><a href="index.html#services-section" class="nav-link">Expertise</a></li>
+                <li><a href="index.html#about-section" class="nav-link">About</a></li>
+                <li><a href="https://accademy.fairdealassets.com/" class="nav-link">Academy</a></li>
                 <li><a href="gallery.html" class="nav-link">Gallery</a></li>
-                <li><a href="listings.html#listings-section" class="nav-link">Listings</a></li>
-                <li class="active"><a href="#sampark-heights" class="nav-link">Sampark Heights</a></li>
-                <li><a href="index.html#contact-section" class="nav-link">Contact</a></li>
+                <li class="active"><a href="listings.html#listings-section" class="nav-link">Listings</a></li>
+                <li class="fd-mobile-nav-cta"><a href="#contact-section" class="nav-link" data-fd-open-modal>Contact us</a></li>
               </ul>
             </nav>
           </div>
 
+          <div class="d-none d-xl-flex fd-nav-cta-col">
+            <a href="#contact-section" class="fd-site-nav__cta" data-fd-open-modal>Contact us</a>
+          </div>
 
-          <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-black float-right"><span class="icon-menu h3"></span></a></div>
+          <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3 fd-nav-toggle-col"><a href="#" class="site-menu-toggle js-menu-toggle text-black float-right" aria-label="Toggle navigation menu" aria-expanded="false"><span></span><span></span><span></span></a></div>
 
         </div>
       </div>
@@ -203,11 +205,11 @@
 
   
     
-    <div class="site-blocks-cover inner-page-cover overlay" style="background-image: url(images/property_1.jpg);" data-aos="fade">
+    <div class="site-blocks-cover inner-page-cover fd-inner-hero fd-inner-hero--property overlay" style="background-image: url(images/property_1.jpg);" data-aos="fade">
       <div class="container">
         <div class="row align-items-center justify-content-center">
-          <div class="col-md-8 text-center">
-            <span class="badge badge-light text-uppercase mb-3 text-dark">Residential Mandate</span>
+          <div class="col-lg-9 text-center fd-inner-hero__copy">
+            <span class="fd-eyebrow">Residential mandate</span>
             <h1 class="mb-3">Sampark Heights, Patia &mdash; Bhubaneswar</h1>
             <p class="lead mb-4">&#8377;1.85 Cr onwards &bull; 3 &amp; 4 BHK premium residences</p>
             <ul class="list-inline hero-metrics">
@@ -215,16 +217,20 @@
               <li class="list-inline-item">RERA filing submitted</li>
               <li class="list-inline-item">64 boutique units</li>
             </ul>
-            <a href="#sampark-heights" class="btn btn-primary btn-pill mt-3">Download Mandate Snapshot</a>
+            <div class="hero-cta-group mt-3">
+              <a href="#sampark-heights" class="btn btn-primary btn-hero smoothscroll">View Mandate <span class="icon-arrow_forward" aria-hidden="true"></span></a>
+              <a href="#contact-section" class="btn btn-outline-primary btn-hero" data-fd-open-modal>Book a Site Visit</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <section class="site-section" id="sampark-heights">
+    <section class="site-section fd-property-detail" id="sampark-heights">
       <div class="container">
         <div class="row">
           <div class="col-lg-7">
+            <span class="fd-eyebrow">Mandate snapshot</span>
             <div class="owl-carousel slide-one-item with-dots property-gallery">
               <div><img src="images/property_1.jpg" alt="Sampark Heights tower elevation" class="img-fluid" loading="lazy" decoding="async"></div>
               <div><img src="images/property_2.jpg" alt="Club amenities planned for Sampark Heights" class="img-fluid" loading="lazy" decoding="async"></div>
@@ -261,7 +267,7 @@
             </ul>
           </div>
           <div class="col-lg-5 pl-lg-5 mt-5 mt-lg-0">
-            <div class="card shadow-sm border-0">
+            <div class="card shadow-sm border-0 fd-mandate-card">
               <div class="card-body">
                 <h3 class="h5 text-black">Mandate Summary</h3>
                 <ul class="list-unstyled property-summary">
@@ -274,7 +280,7 @@
                 <p class="small text-muted mt-3">Due diligence, layouts, and commercials shared post NDA execution.</p>
               </div>
             </div>
-            <div class="card shadow-sm border-0 mt-4">
+            <div class="card shadow-sm border-0 mt-4 fd-mandate-card fd-mandate-card--dark">
               <div class="card-body">
                 <h3 class="h6 text-uppercase text-primary">Authority Coordination</h3>
                 <ul class="list-unstyled mb-0 small">
@@ -289,10 +295,11 @@
       </div>
     </section>
 
-    <section class="site-section bg-light" id="location-advantages">
+    <section class="site-section bg-light fd-location-section" id="location-advantages">
       <div class="container">
         <div class="row">
           <div class="col-lg-6">
+            <span class="fd-eyebrow">Micro-market</span>
             <h2 class="section-title mb-3">Location Advantages</h2>
             <ul class="location-points">
               <li>5 minutes from KIIT University and major IT campuses at Infocity.</li>
@@ -302,6 +309,7 @@
             </ul>
           </div>
           <div class="col-lg-6">
+            <span class="fd-eyebrow">Investment view</span>
             <h2 class="section-title mb-3">Investment Rationale</h2>
             <ul class="location-points">
               <li>High absorption micro-market with double-digit rental escalation.</li>
@@ -314,10 +322,11 @@
       </div>
     </section>
 
-    <section class="site-section" id="next-steps">
+    <section class="site-section fd-next-steps-section" id="next-steps">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-lg-8">
+            <span class="fd-eyebrow">Closing path</span>
             <h2 class="section-title mb-3">Next Steps With Fairdeal Assets</h2>
             <ol class="next-steps pl-3">
               <li><strong>1. Discovery Call:</strong> Align on unit mix, investment goals, and compliance checkpoints.</li>
@@ -327,7 +336,7 @@
             </ol>
           </div>
           <div class="col-lg-4 mt-4 mt-lg-0">
-            <div class="card shadow-sm border-0" role="region" aria-label="Contact Fairdeal Assets">
+            <div class="card shadow-sm border-0 fd-support-card" role="region" aria-label="Contact Fairdeal Assets">
               <div class="card-body">
                 <h3 class="h5 text-black">Talk To Our Mandate Team</h3>
                 <p class="mb-2">Phone: <a href="tel:+919876543210">+91 98765 43210</a></p>
@@ -340,9 +349,20 @@
       </div>
     </section>
 
-    <footer class="site-footer">
-      <div class="container text-center">
-        <p>&copy; <script>document.write(new Date().getFullYear())</script> Fairdeal Assets. Project mandates managed with transparency and compliance.</p>
+    <footer class="site-footer fd-simple-footer">
+      <div class="container">
+        <div class="fd-simple-footer__inner">
+          <div>
+            <a href="index.html" class="fd-simple-footer__brand">Fairdeal Assets</a>
+            <p>Project mandates managed with transparency, compliance, and on-ground coordination.</p>
+          </div>
+          <div class="fd-simple-footer__links">
+            <a href="listings.html">Listings</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="mailto:fairdeal.asset@gmail.com">Email us</a>
+          </div>
+        </div>
+        <p class="fd-simple-footer__copy">&copy; <script>document.write(new Date().getFullYear())</script> Fairdeal Assets. All rights reserved.</p>
       </div>
     </footer>
 
@@ -352,12 +372,9 @@
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/jquery-migrate-3.0.1.min.js"></script>
   <script src="js/jquery-ui.js"></script>
-  <script src="js/popper.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
   <script src="js/owl.carousel.min.js"></script>
   <script src="js/jquery.stellar.min.js"></script>
   <script src="js/jquery.countdown.min.js"></script>
-  <script src="js/bootstrap-datepicker.min.js"></script>
   <script src="js/jquery.easing.1.3.js"></script>
   <script src="js/aos.js"></script>
   <script src="js/jquery.fancybox.min.js"></script>

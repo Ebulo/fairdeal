@@ -61,14 +61,13 @@
     <meta name="twitter:url" content="https://fairdealassets.com/gallery.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fonts/icomoon/style.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/native.css">
     <link rel="stylesheet" href="css/jquery-ui.css">
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/jquery.fancybox.min.css">
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
     <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
     <link rel="stylesheet" href="css/aos.css">
     <link rel="stylesheet" href="css/magnific-popup.css">
@@ -124,7 +123,7 @@
     }
     </script>
   </head>
-  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+  <body>
     <div class="site-wrap">
 
       <div class="site-mobile-menu site-navbar-target">
@@ -140,50 +139,67 @@
         <div class="container">
           <div class="row align-items-center">
             
-            <div class="col-6 col-xl-2">
+            <div class="col-6 col-xl-2 fd-nav-logo-col">
               <!-- <h1 class="mb-0 site-logo m-0 p-0"><a href="index.html" class="mb-0">Fairdeal.</a></h1> -->
-              <a href="index.html">
-                <img src="images/logo.png" width="100" height="100" alt="Fairdeal Assets Logo" class="img-fluid" decoding="async" fetchpriority="high">
+              <a href="index.html" class="fd-site-nav__logo" aria-label="Fairdeal Assets home">
+                <img src="images/logo.png" width="110" height="110" alt="Fairdeal Assets Logo" class="img-fluid" decoding="async" fetchpriority="high">
              </a>
             </div>
 
-            <div class="col-12 col-md-10 d-none d-xl-block">
+            <div class="col-12 col-md-10 d-none d-xl-block fd-nav-menu-col">
               <nav class="site-navigation position-relative text-right" role="navigation">
 
                 <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                  <li><a href="index.html#home-section" class="nav-link">Home</a></li>
-                  <li><a href="index.html#about-section" class="nav-link">About</a></li>
-                  <!-- <li><a href="index.html#values-section" class="nav-link">Core Values</a></li> -->
-                  <!-- <li><a href="index.html#vision-section" class="nav-link">Vision &amp; Mission</a></li> -->
+                  <li><a href="index.html#gallery-section" class="nav-link">Properties</a></li>
                   <li><a href="index.html#services-section" class="nav-link">Expertise</a></li>
-                  <!-- <li><a href="index.html#advantage-section" class="nav-link">Why Us</a></li> -->
+                  <li><a href="index.html#about-section" class="nav-link">About</a></li>
+                  <li><a href="https://accademy.fairdealassets.com/" class="nav-link">Academy</a></li>
                   <li class="active"><a href="#gallery-section" class="nav-link">Gallery</a></li>
-                  <li><a href="index.html#contact-section" class="nav-link">Contact</a></li>
+                  <li><a href="listings.html#listings-section" class="nav-link">Listings</a></li>
+                  <li class="fd-mobile-nav-cta"><a href="#contact-section" class="nav-link" data-fd-open-modal>Contact us</a></li>
                 </ul>
               </nav>
             </div>
 
+            <div class="d-none d-xl-flex fd-nav-cta-col">
+              <a href="#contact-section" class="fd-site-nav__cta" data-fd-open-modal>Contact us</a>
+            </div>
 
-            <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-black float-right"><span class="icon-menu h3"></span></a></div>
+            <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3 fd-nav-toggle-col"><a href="#" class="site-menu-toggle js-menu-toggle text-black float-right" aria-label="Toggle navigation menu" aria-expanded="false"><span></span><span></span><span></span></a></div>
 
           </div>
         </div>
         
       </header>
 
-      <div class="site-blocks-cover inner-page-cover overlay" style="background-image:url(images/hero_2.jpg)" data-aos="fade">
+      <div class="site-blocks-cover inner-page-cover fd-inner-hero fd-inner-hero--gallery overlay" style="background-image:url(images/hero_2.jpg)" data-aos="fade">
         <div class="container">
           <div class="row align-items-center justify-content-center">
-            <div class="col-md-8 text-center">
+            <div class="col-lg-8 text-center fd-inner-hero__copy">
+              <span class="fd-eyebrow">Field notes</span>
               <h1 data-aos="fade-up">Gallery</h1>
               <p class="mb-5" data-aos="fade-up" data-aos-delay="100">Snapshots of the projects, partnerships, and milestones we facilitate across Odisha.</p>
+              <div class="hero-cta-group">
+                <a href="#gallery-section" class="btn btn-primary btn-hero smoothscroll">View Projects <span class="icon-arrow_forward" aria-hidden="true"></span></a>
+                <a href="#contact-section" class="btn btn-outline-primary btn-hero" data-fd-open-modal>Discuss a Mandate</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <section class="site-section gallery-section" id="gallery-section" data-aos="fade-up">
+      <section class="site-section gallery-section fd-gallery-page-section" id="gallery-section" data-aos="fade-up">
         <div class="container">
+          <div class="row mb-5 align-items-end">
+            <div class="col-lg-8">
+              <span class="fd-eyebrow">Project archive</span>
+              <h2 class="section-title mb-3">A clearer look at the work behind each handover</h2>
+              <p class="lead mb-0">Completed milestones, active mandates, and site coordination moments from our property services work across Odisha.</p>
+            </div>
+            <div class="col-lg-3 ml-auto mt-4 mt-lg-0">
+              <a href="listings.html#listings-section" class="btn btn-primary btn-block">Browse Listings</a>
+            </div>
+          </div>
           <div class="gallery-grid" id="page-gallery-grid" data-gallery-limit="0"></div>
         </div>
       </section>
@@ -197,9 +213,20 @@
         </div>
       </div>
 
-      <footer class="site-footer" data-aos="fade-up">
-        <div class="container text-center">
-          <p>&copy; <script>document.write(new Date().getFullYear())</script> Fairdeal Assets. All Rights Reserved.</p>
+      <footer class="site-footer fd-simple-footer" data-aos="fade-up">
+        <div class="container">
+          <div class="fd-simple-footer__inner">
+            <div>
+              <a href="index.html" class="fd-simple-footer__brand">Fairdeal Assets</a>
+              <p>Project snapshots from property services, approvals, and construction coordination.</p>
+            </div>
+            <div class="fd-simple-footer__links">
+              <a href="index.html#services-section">Expertise</a>
+              <a href="listings.html">Listings</a>
+              <a href="mailto:fairdeal.asset@gmail.com">Email us</a>
+            </div>
+          </div>
+          <p class="fd-simple-footer__copy">&copy; <script>document.write(new Date().getFullYear())</script> Fairdeal Assets. All rights reserved.</p>
         </div>
       </footer>
 
@@ -208,8 +235,6 @@
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/jquery-ui.js"></script>
     <script src="js/jquery-migrate-3.0.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/jquery.stellar.min.js"></script>
     <script src="js/jquery.countdown.min.js"></script>

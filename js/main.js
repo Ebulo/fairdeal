@@ -31,8 +31,8 @@ jQuery(document).ready(function ($) {
         $this.prepend('<span class="arrow-collapse collapsed">');
 
         $this.find(".arrow-collapse").attr({
-          "data-toggle": "collapse",
-          "data-target": "#collapseItem" + counter,
+          "aria-expanded": "false",
+          "aria-controls": "collapseItem" + counter,
         });
 
         $this.find("> ul").attr({
@@ -46,10 +46,17 @@ jQuery(document).ready(function ($) {
 
     $("body").on("click", ".arrow-collapse", function (e) {
       var $this = $(this);
-      if ($this.closest("li").find(".collapse").hasClass("show")) {
+      var $collapse = $this.closest("li").find("> .collapse");
+      var isOpen = $collapse.hasClass("show");
+
+      if (isOpen) {
         $this.removeClass("active");
+        $this.attr("aria-expanded", "false");
+        $collapse.removeClass("show");
       } else {
         $this.addClass("active");
+        $this.attr("aria-expanded", "true");
+        $collapse.addClass("show");
       }
       e.preventDefault();
     });
@@ -308,7 +315,7 @@ jQuery(document).ready(function ($) {
   siteCountDown();
 
   var siteDatePicker = function () {
-    if ($(".datepicker").length > 0) {
+    if ($(".datepicker").length > 0 && typeof $.fn.datepicker === "function") {
       $(".datepicker").datepicker();
     }
   };
@@ -322,6 +329,29 @@ jQuery(document).ready(function ($) {
   // navigation
   var OnePageNavigation = function () {
     var navToggler = $(".site-menu-toggle");
+    var getAnchorOffset = function () {
+      var navHeight = $(".js-sticky-header").outerHeight() || 0;
+      return navHeight + ($(window).width() < 768 ? 18 : 28);
+    };
+    var getTargetTop = function ($target) {
+      var top = $target.offset().top;
+      if ($target.hasClass("site-section")) {
+        var sectionPadding = parseFloat($target.css("padding-top")) || 0;
+        top += Math.min(sectionPadding * 0.7, 76);
+      }
+      return top;
+    };
+    var scrollToTarget = function ($target, callback) {
+      $("html, body").animate(
+        {
+          scrollTop: Math.max(0, getTargetTop($target) - getAnchorOffset()),
+        },
+        600,
+        "easeInOutCirc",
+        callback
+      );
+    };
+
     $("body").on(
       "click",
       ".main-menu li a[href^='#'], .smoothscroll[href^='#'], .site-mobile-menu .site-nav-wrap li a",
@@ -337,18 +367,32 @@ jQuery(document).ready(function ($) {
         $("body").removeClass("offcanvas-menu");
         navToggler.removeClass("active").attr("aria-expanded", "false");
 
-        $("html, body").animate(
-          {
-            scrollTop: $target.offset().top,
-          },
-          600,
-          "easeInOutCirc",
-          function () {
+        scrollToTarget($target, function () {
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, "", hash);
+          } else {
             window.location.hash = hash;
           }
-        );
+        });
       }
     );
+
+    var adjustInitialHash = function () {
+      var $initialTarget = window.location.hash ? $(window.location.hash) : $();
+      if ($initialTarget.length) {
+        $("html, body").scrollTop(
+          Math.max(0, getTargetTop($initialTarget) - getAnchorOffset())
+        );
+      }
+    };
+
+    if (window.location.hash) {
+      setTimeout(adjustInitialHash, 120);
+      $(window).on("load", function () {
+        setTimeout(adjustInitialHash, 160);
+        setTimeout(adjustInitialHash, 900);
+      });
+    }
   };
   OnePageNavigation();
 
@@ -385,8 +429,6 @@ jQuery(document).ready(function ($) {
     var copy = stage.querySelector("[data-fd-hero-copy]");
     var bg = stage.querySelector(".fd-hero-modern__bg");
     var building = stage.querySelector("[data-fd-hero-building]");
-    var heroClouds = stage.querySelector("[data-fd-hero-clouds]");
-    var sectionClouds = document.querySelector("[data-fd-section-clouds]");
     var reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
@@ -413,12 +455,9 @@ jQuery(document).ready(function ($) {
       var progress = reduceMotion ? 0 : clamp(-rect.top / travel, 0, 1);
       var copyLift = -progress * 76;
       var copyScale = 1 - progress * 0.24;
-      var buildingLift = -progress * viewportHeight * 0.18;
-      var bgLift = -progress * viewportHeight * 0.045;
-      var bgScale = 1.02 + progress * 0.035;
-      var cloudLift = -progress * viewportHeight * 0.06;
-      var cloudScale = 1 + progress * 0.025;
-      var sectionCloudLift = -progress * viewportHeight * 0.02;
+      var buildingLift = -progress * viewportHeight * 0.085;
+      var bgLift = -progress * viewportHeight * 0.032;
+      var bgScale = 1.08 + progress * 0.045;
 
       setTransform(
         copy,
@@ -444,21 +483,8 @@ jQuery(document).ready(function ($) {
           "translate3d(-50%, " +
           buildingLift.toFixed(2) +
           "px, 0) scale(" +
-          (1 + progress * 0.035).toFixed(3) +
+          (1 + progress * 0.012).toFixed(3) +
           ")"
-      );
-      setTransform(
-        heroClouds,
-        "translate3d(-50%, " +
-          cloudLift.toFixed(2) +
-          "px, 0) scale(" +
-          cloudScale.toFixed(3) +
-          ")"
-      );
-      setOpacity(heroClouds, (0.72 + progress * 0.14).toFixed(3));
-      setTransform(
-        sectionClouds,
-        "translate3d(-50%, " + sectionCloudLift.toFixed(2) + "px, 0)"
       );
     };
 
@@ -1072,7 +1098,7 @@ jQuery(document).ready(function ($) {
       var html = data.slice(0, limit).map(createItem).join("");
       $grid.html(html);
 
-      var offset = Math.floor(Math.random() * sizePattern.length);
+      var offset = 0;
       var rotated = sizePattern
         .slice(offset)
         .concat(sizePattern.slice(0, offset));

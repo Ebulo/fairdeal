@@ -116,7 +116,7 @@ window.FD_GALLERY_IMAGES = [
     "caption": "Property Image 29"
   },
   {
-    "src": "images/property/30.webp",
+    "src": "images/property/30.png",
     "caption": "Property Image 30"
   }
 ];
