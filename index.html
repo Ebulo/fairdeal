@@ -338,7 +338,8 @@
                 <li><a href="#gallery-section" class="nav-link">Properties</a></li>
                 <li><a href="#services-section" class="nav-link">Services</a></li>
                 <li><a href="#about-section" class="nav-link">About</a></li>
-                <li><a href="https://accademy.fairdealassets.com/" class="nav-link">Academy</a></li>
+                <li><a href="#academy-section" class="nav-link">Academy</a></li>
+                <li><a href="#regulatory-section" class="nav-link">Regulatory</a></li>
                 <li><a href="blog.html" class="nav-link">Insights</a></li>
                 <li class="fd-mobile-nav-cta"><a href="#contact-section" class="nav-link" data-fd-open-modal>Contact
                     us</a></li>
@@ -447,28 +448,335 @@
     <section class="site-section fd-academy-section" id="academy-section" data-aos="fade-up">
       <div class="container">
         <div class="row align-items-center">
-          <div class="col-lg-7 mb-4 mb-lg-0">
-            <span class="fd-eyebrow">Major Update</span>
-            <h2 class="section-title mb-3">Fairdeal Academy</h2>
-            <p class="lead mb-4">A focused learning hub for buyers, brokers, and investors to understand property
-              value, documentation, and compliance before they move.</p>
-            <div class="fd-academy-actions">
-              <a href="https://accademy.fairdealassets.com/" class="btn btn-primary">Visit Academy</a>
+          <div class="col-lg-7 mb-5 mb-lg-0">
+            <form class="fd-cma-form" id="fdCmaForm" data-fd-cma-form aria-live="polite" novalidate>
+              <div class="fd-cma-form__top">
+                <div>
+                  <span class="fd-cma-kicker" data-fd-cma-kicker>Step 1</span>
+                  <h3 data-fd-cma-title>AI Valuation Engine</h3>
+                  <p data-fd-cma-description>Generate your institutional CMA blueprint from corridor, land-use,
+                    budget, timeline, and buyer-profile signals.</p>
+                </div>
+                <span class="fd-cma-count" data-fd-cma-count>1 / 3</span>
+              </div>
+
+              <div class="fd-cma-progress" aria-hidden="true">
+                <span data-fd-cma-progress></span>
+              </div>
+
+              <div class="fd-cma-step-tabs" aria-label="CMA form steps">
+                <button class="fd-cma-step-tab is-active" type="button" data-fd-cma-tab="0">
+                  <span>1</span>
+                  <strong>Land Signal</strong>
+                </button>
+                <button class="fd-cma-step-tab" type="button" data-fd-cma-tab="1" disabled>
+                  <span>2</span>
+                  <strong>Investment Thesis</strong>
+                </button>
+                <button class="fd-cma-step-tab" type="button" data-fd-cma-tab="2" disabled>
+                  <span>3</span>
+                  <strong>Delivery Details</strong>
+                </button>
+              </div>
+
+              <div class="fd-cma-step is-active" data-fd-cma-step="0">
+                <div class="fd-cma-grid">
+                  <label class="fd-cma-field" for="cmaGrowthCorridor">
+                    <span>Growth Corridor / Locality</span>
+                    <select id="cmaGrowthCorridor" name="growthCorridor" data-fd-cma-options="growthCorridors"
+                      required>
+                      <option value="">Select corridor</option>
+                    </select>
+                  </label>
+                  <label class="fd-cma-field" for="cmaPlotArea">
+                    <span>Plot Area</span>
+                    <input id="cmaPlotArea" name="plotArea" type="number" min="0.01" step="0.01" placeholder="5"
+                      required>
+                  </label>
+                  <label class="fd-cma-field" for="cmaUnit">
+                    <span>Unit of Measurement</span>
+                    <select id="cmaUnit" name="unitOfMeasurement" data-fd-cma-options="units" required>
+                      <option value="">Select unit</option>
+                    </select>
+                  </label>
+                  <label class="fd-cma-field" for="cmaZoning">
+                    <span>Zoning &amp; Title Status</span>
+                    <select id="cmaZoning" name="zoningStatus" data-fd-cma-options="zoning" required>
+                      <option value="">Select status</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <div class="fd-cma-step" data-fd-cma-step="1" hidden>
+                <div class="fd-cma-grid">
+                  <label class="fd-cma-field" for="cmaIntent">
+                    <span>Development Intent</span>
+                    <select id="cmaIntent" name="developmentIntent" data-fd-cma-options="intents" required>
+                      <option value="">Select intent</option>
+                    </select>
+                  </label>
+                  <label class="fd-cma-field" for="cmaBudget">
+                    <span>Investment Budget Range</span>
+                    <select id="cmaBudget" name="investmentBudgetRange" data-fd-cma-options="budgets" required>
+                      <option value="">Select budget</option>
+                    </select>
+                  </label>
+                  <label class="fd-cma-field" for="cmaTimeline">
+                    <span>Target Acquisition Timeline</span>
+                    <select id="cmaTimeline" name="acquisitionTimeline" data-fd-cma-options="timelines" required>
+                      <option value="">Select timeline</option>
+                    </select>
+                  </label>
+                  <label class="fd-cma-field" for="cmaProfile">
+                    <span>Investor Profile</span>
+                    <select id="cmaProfile" name="investorProfile" data-fd-cma-options="profiles" required>
+                      <option value="">Select profile</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <div class="fd-cma-step" data-fd-cma-step="2" hidden>
+                <div class="fd-cma-grid">
+                  <label class="fd-cma-field" for="cmaName">
+                    <span>Full Legal Name</span>
+                    <input id="cmaName" name="fullLegalName" type="text" autocomplete="name"
+                      placeholder="Aarav Mishra" required>
+                  </label>
+                  <label class="fd-cma-field" for="cmaPhone">
+                    <span>Mobile Number</span>
+                    <input id="cmaPhone" name="mobileNumber" type="tel" autocomplete="tel"
+                      placeholder="+91 98765 43210" required>
+                  </label>
+                  <label class="fd-cma-field" for="cmaEmail">
+                    <span>Email Address</span>
+                    <input id="cmaEmail" name="emailAddress" type="email" autocomplete="email"
+                      placeholder="investor@example.com" required>
+                  </label>
+                  <label class="fd-cma-field" for="cmaInstitutionalEmail">
+                    <span>Institutional Email</span>
+                    <input id="cmaInstitutionalEmail" name="institutionalEmail" type="email" autocomplete="email"
+                      placeholder="name@institution.com" required>
+                  </label>
+                </div>
+              </div>
+
+              <div class="fd-cma-result" data-fd-cma-result hidden>
+                <div class="fd-cma-delivery">
+                  <span>Blueprint generated</span>
+                  <strong data-fd-cma-delivery>Email delivery queued</strong>
+                </div>
+                <div class="fd-cma-result-grid">
+                  <div>
+                    <span>Base market value</span>
+                    <strong data-fd-cma-base>Rs 0</strong>
+                    <small data-fd-cma-area>0 sq.ft. analysed</small>
+                  </div>
+                  <div>
+                    <span>3-year projected value</span>
+                    <strong data-fd-cma-projected>Rs 0</strong>
+                    <small data-fd-cma-cagr>At +0.0% p.a. blended CAGR</small>
+                  </div>
+                  <div>
+                    <span>Regulatory risk index</span>
+                    <strong data-fd-cma-risk>0 / 100</strong>
+                    <small data-fd-cma-risk-band>Institutional grade</small>
+                  </div>
+                </div>
+              </div>
+
+              <p class="fd-cma-message" data-fd-cma-message role="status" aria-live="polite"></p>
+
+              <div class="fd-cma-actions">
+                <button class="btn btn-outline-primary" type="button" data-fd-cma-back hidden>Back</button>
+                <button class="btn btn-primary" type="button" data-fd-cma-next>Continue</button>
+                <button class="btn btn-primary" type="submit" data-fd-cma-submit hidden>Generate &amp; email CMA
+                  PDF</button>
+                <button class="btn btn-primary" type="button" data-fd-cma-reset hidden>New blueprint</button>
+              </div>
+            </form>
+          </div>
+          <div class="col-lg-5">
+            <div class="fd-academy-copy">
+              <span class="fd-eyebrow">Major Update</span>
+              <h2 class="section-title mb-3">Fairdeal Academy</h2>
+              <p class="lead mb-4">A focused learning hub for buyers, brokers, and investors to understand property
+                value, documentation, and compliance before they move.</p>
+              <p class="mb-4">Short practical guides on market checks, title basics, Odisha compliance, and the
+                valuation signals that matter before capital is committed.</p>
+              <div class="fd-academy-actions">
+                <a href="https://accademy.fairdealassets.com/" class="btn btn-primary">Visit Academy</a>
+              </div>
             </div>
           </div>
-          <div class="col-lg-4 ml-auto">
-            <a href="https://accademy.fairdealassets.com/" class="fd-academy-preview"
-              aria-label="Visit Fairdeal Academy">
-              <span class="fd-academy-preview__tag">Now Live</span>
-              <strong>Practical property learning, made simple.</strong>
-              <span>Short guides on market checks, title basics, and Odisha compliance.</span>
-              <div class="fd-academy-preview__metrics" aria-hidden="true">
-                <span>Valuation</span>
-                <span>Due diligence</span>
-                <span>Compliance</span>
-              </div>
-            </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section fd-regulatory-section" id="regulatory-section" data-aos="fade-up">
+      <div class="container">
+        <div class="row mb-5 justify-content-center">
+          <div class="col-lg-9 text-center">
+            <span class="fd-eyebrow">Regulatory Intelligence Hub</span>
+            <h2 class="section-title mb-3">Eliminating the four structural anxieties in Odisha land transactions</h2>
+            <p class="lead">Every land deal in tier-2/3 Odisha fails at one of four bottlenecks. We engineer around
+              each one with verifiable intelligence before you commit capital.</p>
           </div>
+        </div>
+
+        <div class="fd-regulatory-grid" aria-label="Regulatory intelligence cards">
+          <article class="fd-regulatory-card" role="button" tabindex="0" aria-expanded="false"
+            aria-label="Expand Odisha Land Mutation Processes and Revenue Workflows" data-fd-regulatory-card>
+            <div class="fd-regulatory-card__shell">
+              <div class="fd-regulatory-card__face fd-regulatory-card__face--front">
+                <div class="fd-regulatory-card__header">
+                  <span class="fd-regulatory-card__number">01</span>
+                  <span class="fd-regulatory-card__eyebrow">Revenue Department</span>
+                </div>
+                <h3>Odisha Land Mutation Processes &amp; Revenue Workflows</h3>
+                <p>Mutation is the backbone of land ownership transfer. We verify and guide every step from Form-I
+                  application to Revenue Inspector certification.</p>
+                <span class="fd-regulatory-card__cue">Full brief <span aria-hidden="true">&#8635;</span></span>
+              </div>
+              <div class="fd-regulatory-card__face fd-regulatory-card__face--back">
+                <div class="fd-regulatory-card__header">
+                  <span class="fd-regulatory-card__number">01</span>
+                  <span class="fd-regulatory-card__eyebrow">Revenue Department</span>
+                </div>
+                <h3>Odisha Land Mutation Processes &amp; Revenue Workflows</h3>
+                <strong>Key Process Steps:</strong>
+                <ul>
+                  <li>Application at Tahasil office through Form I and II.</li>
+                  <li>Revenue Inspector site verification in 7-15 working days.</li>
+                  <li>Sub-Registrar mutation order issuance.</li>
+                  <li>RoR update in the Bhulekh portal.</li>
+                </ul>
+                <strong>Failure Points We De-Risk:</strong>
+                <ul>
+                  <li>Duplicate plot numbers across Khata records.</li>
+                  <li>Boundary disputes during RI inspection.</li>
+                  <li>Missing legal heir declarations on inherited land.</li>
+                  <li>Incomplete stamp-duty payment records.</li>
+                </ul>
+                <span class="fd-regulatory-card__cue">Summary <span aria-hidden="true">&#8635;</span></span>
+              </div>
+            </div>
+          </article>
+
+          <article class="fd-regulatory-card" role="button" tabindex="0" aria-expanded="false"
+            aria-label="Expand Khata Separation and Legal Title-Chain Integrity" data-fd-regulatory-card>
+            <div class="fd-regulatory-card__shell">
+              <div class="fd-regulatory-card__face fd-regulatory-card__face--front">
+                <div class="fd-regulatory-card__header">
+                  <span class="fd-regulatory-card__number">02</span>
+                  <span class="fd-regulatory-card__eyebrow">Title Integrity</span>
+                </div>
+                <h3>Khata Separation &amp; Legal Title-Chain Integrity</h3>
+                <p>Joint Khata properties need separation before individual sale. We map the full title chain across
+                  generations, declarations, and court records.</p>
+                <span class="fd-regulatory-card__cue">Full brief <span aria-hidden="true">&#8635;</span></span>
+              </div>
+              <div class="fd-regulatory-card__face fd-regulatory-card__face--back">
+                <div class="fd-regulatory-card__header">
+                  <span class="fd-regulatory-card__number">02</span>
+                  <span class="fd-regulatory-card__eyebrow">Title Integrity</span>
+                </div>
+                <h3>Khata Separation &amp; Legal Title-Chain Integrity</h3>
+                <strong>Title-Chain Checks:</strong>
+                <ul>
+                  <li>Khata separation requirement mapped before offer structuring.</li>
+                  <li>Generational ownership lineage reviewed across records.</li>
+                  <li>Legal-heir declarations and succession gaps flagged early.</li>
+                  <li>Court record review for active or historical disputes.</li>
+                </ul>
+                <strong>Ambiguities We De-Risk:</strong>
+                <ul>
+                  <li>Unsigned family transfers.</li>
+                  <li>Unclear inherited ownership.</li>
+                  <li>Joint-holder sale consent gaps.</li>
+                  <li>Mismatch between deed, khata, and possession history.</li>
+                </ul>
+                <span class="fd-regulatory-card__cue">Summary <span aria-hidden="true">&#8635;</span></span>
+              </div>
+            </div>
+          </article>
+
+          <article class="fd-regulatory-card" role="button" tabindex="0" aria-expanded="false"
+            aria-label="Expand ORERA Compliance and Case Ambiguities" data-fd-regulatory-card>
+            <div class="fd-regulatory-card__shell">
+              <div class="fd-regulatory-card__face fd-regulatory-card__face--front">
+                <div class="fd-regulatory-card__header">
+                  <span class="fd-regulatory-card__number">03</span>
+                  <span class="fd-regulatory-card__eyebrow">Regulatory Compliance</span>
+                </div>
+                <h3>ORERA Compliance &amp; Case Ambiguities</h3>
+                <p>Odisha's RERA framework mandates registration of qualifying projects. We map scope against ORERA
+                  thresholds, circulars, and precedent ambiguity.</p>
+                <span class="fd-regulatory-card__cue">Full brief <span aria-hidden="true">&#8635;</span></span>
+              </div>
+              <div class="fd-regulatory-card__face fd-regulatory-card__face--back">
+                <div class="fd-regulatory-card__header">
+                  <span class="fd-regulatory-card__number">03</span>
+                  <span class="fd-regulatory-card__eyebrow">Regulatory Compliance</span>
+                </div>
+                <h3>ORERA Compliance &amp; Case Ambiguities</h3>
+                <strong>Compliance Mapping:</strong>
+                <ul>
+                  <li>Project scope checked against ORERA registration thresholds.</li>
+                  <li>Circular and precedent ambiguity logged before commitment.</li>
+                  <li>Developer registration and disclosure trail reviewed.</li>
+                  <li>Unit count, area, and phase structure reconciled.</li>
+                </ul>
+                <strong>Ambiguities We De-Risk:</strong>
+                <ul>
+                  <li>Split-phase registration exposure.</li>
+                  <li>Promoter disclosure inconsistencies.</li>
+                  <li>Unregistered inventory risk.</li>
+                  <li>Buyer-documentation mismatch.</li>
+                </ul>
+                <span class="fd-regulatory-card__cue">Summary <span aria-hidden="true">&#8635;</span></span>
+              </div>
+            </div>
+          </article>
+
+          <article class="fd-regulatory-card" role="button" tabindex="0" aria-expanded="false"
+            aria-label="Expand NRI Multi-Currency Guidelines and FEMA Rules" data-fd-regulatory-card>
+            <div class="fd-regulatory-card__shell">
+              <div class="fd-regulatory-card__face fd-regulatory-card__face--front">
+                <div class="fd-regulatory-card__header">
+                  <span class="fd-regulatory-card__number">04</span>
+                  <span class="fd-regulatory-card__eyebrow">NRI Compliance</span>
+                </div>
+                <h3>NRI Multi-Currency Guidelines &amp; FEMA Rules</h3>
+                <p>FEMA compliance is non-negotiable for NRI land transactions. We prepare remittance, banking, RBI,
+                  identity, and POA trails before transfer.</p>
+                <span class="fd-regulatory-card__cue">Full brief <span aria-hidden="true">&#8635;</span></span>
+              </div>
+              <div class="fd-regulatory-card__face fd-regulatory-card__face--back">
+                <div class="fd-regulatory-card__header">
+                  <span class="fd-regulatory-card__number">04</span>
+                  <span class="fd-regulatory-card__eyebrow">NRI Compliance</span>
+                </div>
+                <h3>NRI Multi-Currency Guidelines &amp; FEMA Rules</h3>
+                <strong>NRI Transaction Controls:</strong>
+                <ul>
+                  <li>Inward remittance documentation organized before transfer.</li>
+                  <li>Currency flow and payment trail reconciled.</li>
+                  <li>RBI reporting readiness reviewed with transaction records.</li>
+                  <li>Power-of-attorney and identity documentation checked.</li>
+                </ul>
+                <strong>Ambiguities We De-Risk:</strong>
+                <ul>
+                  <li>Unclear source-of-funds trails.</li>
+                  <li>Missing bank documentation.</li>
+                  <li>Non-resident execution gaps.</li>
+                  <li>Currency and settlement record mismatch.</li>
+                </ul>
+                <span class="fd-regulatory-card__cue">Summary <span aria-hidden="true">&#8635;</span></span>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -982,7 +1290,8 @@
                   <li><a href="#services-section">Our Expertise</a></li>
                   <li><a href="blog.html">Insights</a></li>
                   <li><a href="#advantage-section">Why Us</a></li>
-                  <li><a href="https://accademy.fairdealassets.com/">Academy</a></li>
+                  <li><a href="#academy-section">Academy</a></li>
+                  <li><a href="#regulatory-section">Regulatory Hub</a></li>
                   <li><a href="#testimonials-section">Testimonials</a></li>
                   <li><a href="#lead-section">Market Report</a></li>
                   <li><a href="#contact-section">Contact</a></li>
@@ -1051,6 +1360,7 @@
   <script src="js/jquery.sticky.js"></script>
   <script src="js/gallery-data.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/fairdeal-intelligence.js"></script>
   <script src="js/blog-renderer.js"></script>
 
 </body>
