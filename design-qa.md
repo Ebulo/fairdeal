@@ -7,7 +7,7 @@
 - Mobile layered hero start: `/private/tmp/fd-hero-mobile-check.png` at 390x844.
 - Mobile values handoff: `/private/tmp/fd-values-mobile-check.png` at 390x844.
 - JavaScript syntax check: `node --check js/main.js`.
-- Secondary page HTTP checks: `listings.html`, `property-single.html`, `gallery.html`, and `single.html` returned `200 OK` on the local static server.
+- Secondary page HTTP checks: `listings.html`, `property.html`, `gallery.html`, and `article.html` returned `200 OK` on the local static server.
 - Secondary page asset check: all live local `src` and `href` assets referenced by the edited pages exist.
 
 ## Checks

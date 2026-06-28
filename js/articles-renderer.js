@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var DATA_URL = "data/blogs.json";
+  var DATA_URL = "data/articles.json";
   var SITE_URL = "https://fairdealassets.com/";
 
   var state = {
@@ -28,7 +28,7 @@
   }
 
   function articleUrl(article) {
-    return "single.html?article=" + encodeURIComponent(article.slug);
+    return "article.html?article=" + encodeURIComponent(article.slug);
   }
 
   function formatDate(dateText) {

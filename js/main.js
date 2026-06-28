@@ -1,3 +1,48 @@
+(function () {
+  var nav = window.navigator || {};
+  var screenObj = window.screen || {};
+  var screenWidth = screenObj.width || window.innerWidth || 0;
+  var screenHeight = screenObj.height || window.innerHeight || 0;
+  var screenMin = Math.min(screenWidth, screenHeight);
+  var screenMax = Math.max(screenWidth, screenHeight);
+  var touchPoints = nav.maxTouchPoints || nav.msMaxTouchPoints || 0;
+  var userAgent = nav.userAgent || "";
+  var isMobileUserAgent = /Android|iPhone|iPod|IEMobile|Opera Mini|Mobile/i.test(
+    userAgent
+  );
+  var isTabletUserAgent =
+    /iPad|Tablet/i.test(userAgent) ||
+    (nav.platform === "MacIntel" && touchPoints > 1);
+  var isPhoneLikeScreen =
+    touchPoints > 0 && screenMin > 0 && screenMin <= 900 && screenMax <= 1200;
+  var isTabletLikeScreen =
+    touchPoints > 0 && screenMin > 0 && screenMin <= 1024 && screenMax <= 1400;
+  var shouldForceMobileUi =
+    isMobileUserAgent ||
+    isTabletUserAgent ||
+    isPhoneLikeScreen ||
+    isTabletLikeScreen;
+
+  if (shouldForceMobileUi) {
+    document.documentElement.classList.add("fd-force-mobile-ui");
+
+    if (screenMin > 0 && window.innerWidth > screenMin + 80) {
+      var viewport = document.querySelector("meta[name='viewport']");
+      if (viewport) {
+        viewport.setAttribute(
+          "content",
+          "width=" + screenMin + ", initial-scale=1, maximum-scale=1, shrink-to-fit=no"
+        );
+      }
+      document.documentElement.classList.add("fd-force-physical-viewport");
+    }
+  }
+
+  if (isTabletUserAgent || isTabletLikeScreen) {
+    document.documentElement.classList.add("fd-force-tablet-ui");
+  }
+})();
+
 AOS.init({
   duration: 700,
   easing: "ease-out-cubic",
@@ -15,13 +60,55 @@ jQuery(document).ready(function ($) {
   "use strict";
 
   var siteMenuClone = function () {
-    $(".js-clone-nav").each(function () {
-      var $this = $(this);
-      $this
-        .clone()
-        .attr("class", "site-nav-wrap")
-        .appendTo(".site-mobile-menu-body");
-    });
+    var buildMobileNav = function () {
+      var $nav = $('<ul class="site-nav-wrap"></ul>');
+      var $sourceItems = $(".js-clone-nav").first().children("li");
+
+      $sourceItems.each(function () {
+        var $item = $(this).clone(false, false);
+        $item.find(".arrow-collapse").remove();
+        $item.find(".collapse").removeClass("collapse show").removeAttr("id");
+        $item.find("[id]").addBack("[id]").removeAttr("id");
+        $nav.append($item);
+      });
+
+      if ($nav.find("a").length) {
+        return $nav;
+      }
+
+      var isHomePage = /\/(index\.html)?$/.test(window.location.pathname);
+      var homePrefix = isHomePage ? "" : "index.html";
+      [
+        ["Properties", homePrefix + "#gallery-section"],
+        ["Services", homePrefix + "#services-section"],
+        ["About", homePrefix + "#about-section"],
+        ["Academy", "https://academy.fairdealassets.com/"],
+        ["Insights", "blog.html"],
+        ["Contact us", homePrefix + "#contact-section"],
+      ].forEach(function (item, index, items) {
+        var $li = $("<li></li>");
+        if (index === items.length - 1) $li.addClass("fd-mobile-nav-cta");
+        $("<a></a>")
+          .attr("href", item[1])
+          .addClass("nav-link")
+          .text(item[0])
+          .appendTo($li);
+        $nav.append($li);
+      });
+
+      return $nav;
+    };
+
+    var renderMobileNav = function () {
+      var $mobileBody = $(".site-mobile-menu-body");
+      if (!$mobileBody.length) {
+        return;
+      }
+
+      $mobileBody.empty().append(buildMobileNav());
+    };
+
+    renderMobileNav();
 
     setTimeout(function () {
       var counter = 0;
@@ -61,39 +148,63 @@ jQuery(document).ready(function ($) {
       e.preventDefault();
     });
 
+    var closeMobileMenu = function () {
+      $("body").removeClass("offcanvas-menu");
+      $(".js-menu-toggle").removeClass("active");
+      $(".site-menu-toggle").attr("aria-expanded", "false");
+    };
+
+    var openMobileMenu = function () {
+      renderMobileNav();
+      $("body").addClass("offcanvas-menu");
+      $(".site-menu-toggle").addClass("active").attr("aria-expanded", "true");
+    };
+
+    $(".site-mobile-menu-close .js-menu-toggle").attr({
+      role: "button",
+      tabindex: "0",
+      "aria-label": "Close navigation menu",
+    });
+
     $(window).resize(function () {
       var $this = $(this),
         w = $this.width();
 
       if (w > 768) {
         if ($("body").hasClass("offcanvas-menu")) {
-          $("body").removeClass("offcanvas-menu");
+          closeMobileMenu();
         }
       }
     });
 
     $("body").on("click", ".js-menu-toggle", function (e) {
-      var $this = $(this);
       e.preventDefault();
+      e.stopPropagation();
 
       if ($("body").hasClass("offcanvas-menu")) {
-        $("body").removeClass("offcanvas-menu");
-        $this.removeClass("active");
-        $this.attr("aria-expanded", "false");
+        closeMobileMenu();
       } else {
-        $("body").addClass("offcanvas-menu");
-        $this.addClass("active");
-        $this.attr("aria-expanded", "true");
+        openMobileMenu();
       }
     });
+
+    $("body").on(
+      "keydown",
+      ".site-mobile-menu-close .js-menu-toggle",
+      function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          closeMobileMenu();
+        }
+      },
+    );
 
     // click outisde offcanvas
     $(document).mouseup(function (e) {
       var container = $(".site-mobile-menu");
       if (!container.is(e.target) && container.has(e.target).length === 0) {
         if ($("body").hasClass("offcanvas-menu")) {
-          $("body").removeClass("offcanvas-menu");
-          $(".js-menu-toggle").removeClass("active").attr("aria-expanded", "false");
+          closeMobileMenu();
         }
       }
     });
@@ -109,8 +220,8 @@ jQuery(document).ready(function ($) {
           .find(".form-control")
           .val(
             parseInt(
-              $(this).closest(".input-group").find(".form-control").val()
-            ) - 1
+              $(this).closest(".input-group").find(".form-control").val(),
+            ) - 1,
           );
       } else {
         $(this).closest(".input-group").find(".form-control").val(parseInt(0));
@@ -123,8 +234,8 @@ jQuery(document).ready(function ($) {
         .find(".form-control")
         .val(
           parseInt(
-            $(this).closest(".input-group").find(".form-control").val()
-          ) + 1
+            $(this).closest(".input-group").find(".form-control").val(),
+          ) + 1,
         );
     });
   };
@@ -172,7 +283,7 @@ jQuery(document).ready(function ($) {
       slide: function (event, ui) {
         if ($amount.length) {
           $amount.val(
-            formatValue(ui.values[0]) + " - " + formatValue(ui.values[1])
+            formatValue(ui.values[0]) + " - " + formatValue(ui.values[1]),
           );
         }
       },
@@ -181,7 +292,7 @@ jQuery(document).ready(function ($) {
     if ($amount.length) {
       var currentValues = $slider.slider("values");
       $amount.val(
-        formatValue(currentValues[0]) + " - " + formatValue(currentValues[1])
+        formatValue(currentValues[0]) + " - " + formatValue(currentValues[1]),
       );
     }
   };
@@ -307,8 +418,8 @@ jQuery(document).ready(function ($) {
             '<span class="countdown-block"><span class="label">%d</span> days </span>' +
             '<span class="countdown-block"><span class="label">%H</span> hr </span>' +
             '<span class="countdown-block"><span class="label">%M</span> min </span>' +
-            '<span class="countdown-block"><span class="label">%S</span> sec</span>'
-        )
+            '<span class="countdown-block"><span class="label">%S</span> sec</span>',
+        ),
       );
     });
   };
@@ -348,7 +459,7 @@ jQuery(document).ready(function ($) {
         },
         600,
         "easeInOutCirc",
-        callback
+        callback,
       );
     };
 
@@ -374,14 +485,14 @@ jQuery(document).ready(function ($) {
             window.location.hash = hash;
           }
         });
-      }
+      },
     );
 
     var adjustInitialHash = function () {
       var $initialTarget = window.location.hash ? $(window.location.hash) : $();
       if ($initialTarget.length) {
         $("html, body").scrollTop(
-          Math.max(0, getTargetTop($initialTarget) - getAnchorOffset())
+          Math.max(0, getTargetTop($initialTarget) - getAnchorOffset()),
         );
       }
     };
@@ -430,7 +541,7 @@ jQuery(document).ready(function ($) {
     var bg = stage.querySelector(".fd-hero-modern__bg");
     var building = stage.querySelector("[data-fd-hero-building]");
     var reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     ).matches;
     var ticking = false;
 
@@ -450,12 +561,17 @@ jQuery(document).ready(function ($) {
       ticking = false;
 
       var rect = hero.getBoundingClientRect();
-      var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      var viewportHeight =
+        window.innerHeight || document.documentElement.clientHeight;
+      var viewportWidth =
+        window.innerWidth || document.documentElement.clientWidth;
       var travel = Math.max(1, hero.offsetHeight - viewportHeight);
       var progress = reduceMotion ? 0 : clamp(-rect.top / travel, 0, 1);
       var copyLift = -progress * 76;
       var copyScale = 1 - progress * 0.24;
-      var buildingLift = -progress * viewportHeight * 0.085;
+      var buildingLiftFactor =
+        viewportWidth >= 1200 ? 0.6 : viewportWidth >= 768 ? 0.12 : 0.085;
+      var buildingLift = -progress * viewportHeight * buildingLiftFactor;
       var bgLift = -progress * viewportHeight * 0.032;
       var bgScale = 1.08 + progress * 0.045;
 
@@ -465,10 +581,11 @@ jQuery(document).ready(function ($) {
           copyLift.toFixed(2) +
           "px, 0) scale(" +
           copyScale.toFixed(3) +
-          ")"
+          ")",
       );
       setOpacity(copy, (1 - progress * 0.62).toFixed(3));
-      if (copy) copy.style.filter = "blur(" + (progress * 1.2).toFixed(2) + "px)";
+      if (copy)
+        copy.style.filter = "blur(" + (progress * 1.2).toFixed(2) + "px)";
 
       setTransform(
         bg,
@@ -476,15 +593,15 @@ jQuery(document).ready(function ($) {
           bgLift.toFixed(2) +
           "px, 0) scale(" +
           bgScale.toFixed(3) +
-          ")"
+          ")",
       );
       setTransform(
         building,
-          "translate3d(-50%, " +
+        "translate3d(-50%, " +
           buildingLift.toFixed(2) +
           "px, 0) scale(" +
           (1 + progress * 0.012).toFixed(3) +
-          ")"
+          ")",
       );
     };
 
@@ -689,7 +806,7 @@ jQuery(document).ready(function ($) {
     var $toast = $("#fdToast");
     if (!$toast.length) {
       $toast = $(
-        '<div id="fdToast" class="fd-toast" role="status" aria-live="polite" aria-hidden="true"></div>'
+        '<div id="fdToast" class="fd-toast" role="status" aria-live="polite" aria-hidden="true"></div>',
       );
       $("body").append($toast);
     }
@@ -913,7 +1030,7 @@ jQuery(document).ready(function ($) {
       var $toast = $("#fdToast");
       if (!$toast.length) {
         $toast = $(
-          '<div id="fdToast" class="fd-toast" role="status" aria-live="polite" aria-hidden="true"></div>'
+          '<div id="fdToast" class="fd-toast" role="status" aria-live="polite" aria-hidden="true"></div>',
         );
         $("body").append($toast);
       }
@@ -945,10 +1062,11 @@ jQuery(document).ready(function ($) {
 
       var submitText = $.trim($submit.text()) || "Submit";
       var leadName =
-        $form.data("fdLeadName") || $form.data("fd-lead-name") || "Website Lead";
+        $form.data("fdLeadName") ||
+        $form.data("fd-lead-name") ||
+        "Website Lead";
       var successMessage =
-        $form.data("fdSuccessMessage") ||
-        "Thanks! We'll be in touch shortly.";
+        $form.data("fdSuccessMessage") || "Thanks! We'll be in touch shortly.";
 
       var findField = function (name) {
         var $field = $form.find('[data-fd-field="' + name + '"]');
@@ -1025,7 +1143,7 @@ jQuery(document).ready(function ($) {
             console.error("Lead send failed", err);
             showToast(
               "Unable to send right now. Please try again later.",
-              true
+              true,
             );
           })
           .finally(function () {
