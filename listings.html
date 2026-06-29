@@ -122,7 +122,7 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "url": "https://fairdealassets.com/property.html#utkal-corporate-center",
+          "url": "https://fairdealassets.com/listings.html#utkal-corporate-center",
           "name": "Utkal Corporate Center, Cuttack",
           "item": {
             "@type": "Offer",
@@ -147,7 +147,7 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "url": "https://fairdealassets.com/property.html#coastal-vista-villas",
+          "url": "https://fairdealassets.com/listings.html#coastal-vista-villas",
           "name": "Coastal Vista Villas, Puri",
           "item": {
             "@type": "Offer",
@@ -172,7 +172,7 @@
         {
           "@type": "ListItem",
           "position": 4,
-          "url": "https://fairdealassets.com/property.html#technosquare-it-park",
+          "url": "https://fairdealassets.com/listings.html#technosquare-it-park",
           "name": "TechnoSquare IT Park, Infocity Bhubaneswar",
           "item": {
             "@type": "Offer",
@@ -197,7 +197,7 @@
         {
           "@type": "ListItem",
           "position": 5,
-          "url": "https://fairdealassets.com/property.html#greenview-residences",
+          "url": "https://fairdealassets.com/listings.html#greenview-residences",
           "name": "Greenview Residences, Sambalpur",
           "item": {
             "@type": "Offer",
@@ -256,12 +256,9 @@
             <nav class="site-navigation position-relative text-right" role="navigation">
 
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                <li><a href="index.html#gallery-section" class="nav-link">Properties</a></li>
-                <li><a href="index.html#services-section" class="nav-link">Expertise</a></li>
+                <li class="active"><a href="#listings-section" class="nav-link">Properties</a></li>
+                <li><a href="index.html#services-section" class="nav-link">Services</a></li>
                 <li><a href="index.html#about-section" class="nav-link">About</a></li>
-                <li><a href="https://academy.fairdealassets.com/" class="nav-link">Academy</a></li>
-                <li><a href="gallery.html" class="nav-link">Gallery</a></li>
-                <li class="active"><a href="#listings-section" class="nav-link">Listings</a></li>
                 <li class="fd-mobile-nav-cta"><a href="#contact-section" class="nav-link" data-fd-open-modal>Contact
                     us</a></li>
               </ul>
@@ -318,7 +315,7 @@
               checks, and authority coordination already in motion.</p>
           </div>
           <div class="col-lg-4 text-lg-right mt-4 mt-lg-0">
-            <a href="mailto:fairdeal.asset@gmail.com?subject=Submit%20Property%20Mandate"
+            <a href="mailto:hello@fairdealassets.com?subject=Submit%20Property%20Mandate"
               class="btn btn-primary btn-block">Submit Your Mandate</a>
           </div>
         </div>
@@ -328,11 +325,11 @@
               <h3 class="text-black mb-4 h5 font-family-2">Refine Listings</h3>
               <form action="#" class="listing-filter">
                 <div class="form-group">
-                  <label class="sr-only" for="listing-sort">Sort by</label>
+                  <label class="sr-only" for="listing-sort">Listing status</label>
                   <div class="select-wrap">
                     <span class="icon icon-keyboard_arrow_down"></span>
-                    <select id="listing-sort" class="form-control px-3" aria-label="Sort listings">
-                      <option value="recent">Launch Date (Newest)</option>
+                    <select id="listing-sort" class="form-control px-3" aria-label="Filter by listing status">
+                      <option value="recent">All Statuses</option>
                       <option value="ready">Ready to Move</option>
                       <option value="under-construction">Under Construction</option>
                     </select>
@@ -343,6 +340,7 @@
                   <div class="select-wrap">
                     <span class="icon icon-keyboard_arrow_down"></span>
                     <select id="listing-type" class="form-control px-3" aria-label="Filter by asset type">
+                      <option value="all">All Asset Types</option>
                       <option value="residential">Residential</option>
                       <option value="commercial">Commercial</option>
                       <option value="industrial">Industrial &amp; Logistics</option>
@@ -354,6 +352,7 @@
                   <div class="select-wrap">
                     <span class="icon icon-keyboard_arrow_down"></span>
                     <select id="listing-transaction" class="form-control px-3" aria-label="Filter by transaction mode">
+                      <option value="all">All Transaction Modes</option>
                       <option value="sale">Sale</option>
                       <option value="lease">Lease</option>
                       <option value="joint">Joint Development</option>
@@ -366,7 +365,7 @@
             <div class="mb-5 fd-filter-card">
               <h3 class="text-black mb-4 h5 font-family-2">Budget Range</h3>
               <div id="slider-range" class="border-primary" data-currency="&#8377;" data-unit="lakh" data-min="0"
-                data-max="600" data-values="0,200" data-step="5"></div>
+                data-max="1200" data-values="0,1200" data-step="5"></div>
               <input type="text" name="text" id="amount" class="form-control border-0 pl-0 bg-white" disabled
                 data-currency="&#8377;" data-unit="lakh" aria-live="polite" />
               <small class="text-muted d-block mt-2">Indicative budgets are shown in lakh rupees. Request our detailed
@@ -378,14 +377,16 @@
                 <h4 class="h6 text-uppercase text-primary">Need Tailored Support?</h4>
                 <p class="mb-2">Share your requirement to receive comparative analysis, due diligence packs, and
                   authority status reports.</p>
-                <a href="mailto:fairdeal.asset@gmail.com?subject=Property%20Shortlist%20Request"
+                <a href="mailto:hello@fairdealassets.com?subject=Property%20Shortlist%20Request"
                   class="btn btn-sm btn-primary">Email Fairdeal Assets</a>
               </div>
             </div>
           </aside>
           <div class="col-md-9 order-2 order-md-1 fd-listing-results">
-            <article class="property horizontal d-flex fd-listing-card" id="sampark-heights" itemscope
-              itemtype="https://schema.org/Offer">
+            <article class="property horizontal d-flex fd-listing-card" id="sampark-heights"
+              data-listing-type="residential" data-listing-transaction="sale"
+              data-listing-status="under-construction" data-listing-price-lakh="185" data-listing-launch="2025-01"
+              itemscope itemtype="https://schema.org/Offer">
               <div class="mr-3 img-entry">
                 <a href="property.html#sampark-heights" itemprop="url"><img src="images/property_1-sm.jpg"
                     alt="Sampark Heights apartments in Patia, Bhubaneswar" class="img-fluid" loading="lazy"
@@ -407,15 +408,17 @@
               </div>
             </article>
 
-            <article class="property horizontal d-flex fd-listing-card" id="utkal-corporate-center" itemscope
-              itemtype="https://schema.org/Offer">
+            <article class="property horizontal d-flex fd-listing-card" id="utkal-corporate-center"
+              data-listing-type="commercial" data-listing-transaction="sale"
+              data-listing-status="under-construction" data-listing-price-lakh="375" data-listing-launch="2024-12"
+              itemscope itemtype="https://schema.org/Offer">
               <div class="mr-3 img-entry">
-                <a href="property.html#utkal-corporate-center" itemprop="url"><img src="images/property_2-sm.jpg"
+                <a href="#utkal-corporate-center" itemprop="url"><img src="images/property_2-sm.jpg"
                     alt="Utkal Corporate Center grade-A offices in Cuttack" class="img-fluid" loading="lazy"
                     decoding="async" itemprop="image"></a>
               </div>
               <div class="prop-details p-3">
-                <div><a href="property.html#utkal-corporate-center" itemprop="url"><strong class="price"
+                <div><a href="#utkal-corporate-center" itemprop="url"><strong class="price"
                       itemprop="price">&#8377;3.75 Cr onwards</strong></a></div>
                 <meta itemprop="priceCurrency" content="INR">
                 <meta itemprop="price" content="37500000">
@@ -430,15 +433,17 @@
               </div>
             </article>
 
-            <article class="property horizontal d-flex fd-listing-card" id="coastal-vista-villas" itemscope
-              itemtype="https://schema.org/Offer">
+            <article class="property horizontal d-flex fd-listing-card" id="coastal-vista-villas"
+              data-listing-type="residential" data-listing-transaction="sale"
+              data-listing-status="under-construction" data-listing-price-lakh="240" data-listing-launch="2025-02"
+              itemscope itemtype="https://schema.org/Offer">
               <div class="mr-3 img-entry">
-                <a href="property.html#coastal-vista-villas" itemprop="url"><img src="images/property_3-sm.jpg"
+                <a href="#coastal-vista-villas" itemprop="url"><img src="images/property_3-sm.jpg"
                     alt="Coastal Vista Villas premium homes near Puri coastline" class="img-fluid" loading="lazy"
                     decoding="async" itemprop="image"></a>
               </div>
               <div class="prop-details p-3">
-                <div><a href="property.html#coastal-vista-villas" itemprop="url"><strong class="price"
+                <div><a href="#coastal-vista-villas" itemprop="url"><strong class="price"
                       itemprop="price">&#8377;2.40 Cr onwards</strong></a></div>
                 <meta itemprop="priceCurrency" content="INR">
                 <meta itemprop="price" content="24000000">
@@ -453,15 +458,17 @@
               </div>
             </article>
 
-            <article class="property horizontal d-flex fd-listing-card" id="technosquare-it-park" itemscope
-              itemtype="https://schema.org/Offer">
+            <article class="property horizontal d-flex fd-listing-card" id="technosquare-it-park"
+              data-listing-type="industrial" data-listing-transaction="lease"
+              data-listing-status="under-construction" data-listing-price-lakh="1200" data-listing-launch="2024-11"
+              itemscope itemtype="https://schema.org/Offer">
               <div class="mr-3 img-entry">
-                <a href="property.html#technosquare-it-park" itemprop="url"><img src="images/property_4-sm.jpg"
+                <a href="#technosquare-it-park" itemprop="url"><img src="images/property_4-sm.jpg"
                     alt="TechnoSquare IT Park warm shell floors in Bhubaneswar" class="img-fluid" loading="lazy"
                     decoding="async" itemprop="image"></a>
               </div>
               <div class="prop-details p-3">
-                <div><a href="property.html#technosquare-it-park" itemprop="url"><strong class="price"
+                <div><a href="#technosquare-it-park" itemprop="url"><strong class="price"
                       itemprop="price">&#8377;12.0 Cr (invite)</strong></a></div>
                 <meta itemprop="priceCurrency" content="INR">
                 <meta itemprop="price" content="120000000">
@@ -476,15 +483,16 @@
               </div>
             </article>
 
-            <article class="property horizontal d-flex fd-listing-card" id="greenview-residences" itemscope
-              itemtype="https://schema.org/Offer">
+            <article class="property horizontal d-flex fd-listing-card" id="greenview-residences"
+              data-listing-type="residential" data-listing-transaction="sale" data-listing-status="ready"
+              data-listing-price-lakh="95" data-listing-launch="2024-10" itemscope itemtype="https://schema.org/Offer">
               <div class="mr-3 img-entry">
-                <a href="property.html#greenview-residences" itemprop="url"><img src="images/property_5-sm.jpg"
+                <a href="#greenview-residences" itemprop="url"><img src="images/property_5-sm.jpg"
                     alt="Greenview Residences mid-rise community in Sambalpur" class="img-fluid" loading="lazy"
                     decoding="async" itemprop="image"></a>
               </div>
               <div class="prop-details p-3">
-                <div><a href="property.html#greenview-residences" itemprop="url"><strong class="price"
+                <div><a href="#greenview-residences" itemprop="url"><strong class="price"
                       itemprop="price">&#8377;95 Lakh onwards</strong></a></div>
                 <meta itemprop="priceCurrency" content="INR">
                 <meta itemprop="price" content="9500000">
@@ -499,8 +507,13 @@
               </div>
             </article>
 
+            <div class="fd-listing-empty" data-fd-listing-empty hidden>
+              <h3>No listings match these filters</h3>
+              <p>Adjust the status, asset type, transaction mode, or budget range to widen the shortlist.</p>
+            </div>
+
             <p class="text-muted small mt-4">Looking for industrial land aggregation, warehousing, or built-to-suit
-              campuses? <a href="mailto:fairdeal.asset@gmail.com?subject=Custom%20Real%20Estate%20Requirement">Write to
+              campuses? <a href="mailto:hello@fairdealassets.com?subject=Custom%20Real%20Estate%20Requirement">Write to
                 us</a> with your mandate specifics and our team will share a curated shortlist.</p>
           </div>
         </div>
@@ -542,7 +555,7 @@
           </div>
 
           <div class="property">
-            <a href="property.html#utkal-corporate-center">
+            <a href="#utkal-corporate-center">
               <img src="images/property_2.jpg" alt="Utkal Corporate Center facade in Cuttack" class="img-fluid"
                 loading="lazy" decoding="async">
             </a>
@@ -558,7 +571,7 @@
           </div>
 
           <div class="property">
-            <a href="property.html#coastal-vista-villas">
+            <a href="#coastal-vista-villas">
               <img src="images/property_3.jpg" alt="Coastal Vista Villas aerial rendering near Puri" class="img-fluid"
                 loading="lazy" decoding="async">
             </a>
@@ -574,7 +587,7 @@
           </div>
 
           <div class="property">
-            <a href="property.html#technosquare-it-park">
+            <a href="#technosquare-it-park">
               <img src="images/property_4.jpg" alt="TechnoSquare IT Park modern glass facade" class="img-fluid"
                 loading="lazy" decoding="async">
             </a>
@@ -647,7 +660,7 @@
           <div class="fd-simple-footer__links">
             <a href="index.html#services-section">Expertise</a>
             <a href="gallery.html">Gallery</a>
-            <a href="mailto:fairdeal.asset@gmail.com">Email us</a>
+            <a href="mailto:hello@fairdealassets.com">Email us</a>
           </div>
         </div>
         <p class="fd-simple-footer__copy">&copy;

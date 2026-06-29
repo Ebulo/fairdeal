@@ -90,8 +90,6 @@ jQuery(document).ready(function ($) {
         ["Properties", homePrefix + "#gallery-section"],
         ["Services", homePrefix + "#services-section"],
         ["About", homePrefix + "#about-section"],
-        ["Academy", "https://academy.fairdealassets.com/"],
-        ["Insights", "blog.html"],
         ["Contact us", homePrefix + "#contact-section"],
       ].forEach(function (item, index, items) {
         var $li = $("<li></li>");
@@ -297,6 +295,10 @@ jQuery(document).ready(function ($) {
             formatValue(ui.values[0]) + " - " + formatValue(ui.values[1]),
           );
         }
+        $(document).trigger("fd:listing-filters-change");
+      },
+      change: function () {
+        $(document).trigger("fd:listing-filters-change");
       },
     });
 
@@ -308,6 +310,63 @@ jQuery(document).ready(function ($) {
     }
   };
   siteSliderRange();
+
+  var initListingFilters = function () {
+    var $cards = $(".fd-listing-card");
+    if (!$cards.length) return;
+
+    var $status = $("#listing-sort");
+    var $type = $("#listing-type");
+    var $transaction = $("#listing-transaction");
+    var $slider = $("#slider-range");
+    var $empty = $("[data-fd-listing-empty]");
+
+    var selected = function ($field, fallback) {
+      return ($field.val() || fallback || "all").toString();
+    };
+
+    var budgetValues = function () {
+      if ($slider.length && typeof $slider.slider === "function") {
+        return $slider.slider("values");
+      }
+
+      return [0, Number.POSITIVE_INFINITY];
+    };
+
+    var applyFilters = function () {
+      var status = selected($status, "recent");
+      var type = selected($type, "all");
+      var transaction = selected($transaction, "all");
+      var budget = budgetValues();
+      var minBudget = Number(budget[0]) || 0;
+      var maxBudget = Number(budget[1]) || Number.POSITIVE_INFINITY;
+      var visibleCount = 0;
+
+      $cards.each(function () {
+        var $card = $(this);
+        var price = Number($card.data("listing-price-lakh")) || 0;
+        var matches =
+          (status === "recent" || $card.data("listing-status") === status) &&
+          (type === "all" || $card.data("listing-type") === type) &&
+          (transaction === "all" ||
+            $card.data("listing-transaction") === transaction) &&
+          price >= minBudget &&
+          price <= maxBudget;
+
+        $card.toggle(matches);
+        if (matches) visibleCount += 1;
+      });
+
+      if ($empty.length) {
+        $empty.prop("hidden", visibleCount > 0);
+      }
+    };
+
+    $status.add($type).add($transaction).on("change", applyFilters);
+    $(document).on("fd:listing-filters-change", applyFilters);
+    applyFilters();
+  };
+  initListingFilters();
 
   var siteCarousel = function () {
     if ($(".nonloop-block-13").length > 0) {
@@ -689,11 +748,11 @@ jQuery(document).ready(function ($) {
   // WhatsApp button + contact popup
   (function () {
     var whatsappUrl =
-      "https://wa.me/917684095344/?text=Hey+There,+I+needed+assistance+in+properties+can+we+conect";
+      "https://wa.me/917684095344/?text=Hi%2C%20I%27m%20interested%20in%20properties%20in%20Odisha.%20Can%20we%20connect%3F";
     var phoneDisplay = "+91 7684095344";
     var phoneTel = "+917684095344";
     var whatsappDisplay = "+91 7684095344";
-    var emailAddress = "fairdeal.asset@gmail.com";
+    var emailAddress = "hello@fairdealassets.com";
     var officeHours = "Monday to Saturday, 10:00 AM - 6:00 PM IST";
     var serviceArea = "Odisha and adjoining regions";
 
@@ -718,8 +777,8 @@ jQuery(document).ready(function ($) {
         '<button type="button" class="fd-contact-modal__close" aria-label="Close contact form" data-fd-modal-close>&times;</button>',
         '<div class="fd-contact-modal__info">',
         '<p class="fd-contact-modal__eyebrow">Get in Touch</p>',
-        '<h3 id="fdContactModalTitle" class="fd-contact-modal__title">Ready to find your dream property?</h3>',
-        '<p class="fd-contact-modal__subtitle">Connect with our team for trusted guidance and quick responses.</p>',
+        '<h3 id="fdContactModalTitle" class="fd-contact-modal__title">Ready to review a property paper trail?</h3>',
+        '<p class="fd-contact-modal__subtitle">Connect with our team for pricing, documentation, and approval clarity.</p>',
         '<div class="fd-contact-modal__details">',
         '<p style="font-size: 0.8rem;"><strong>Phone/Whatsapp</strong><br><a href="tel:',
         phoneTel,
@@ -860,44 +919,6 @@ jQuery(document).ready(function ($) {
       var $subject = findField("subject");
       var $message = findField("message");
 
-      var $captchaQuestion = $form.find("[data-fd-captcha-question]");
-      if (!$captchaQuestion.length) {
-        $captchaQuestion = $form.find("#captchaQuestion");
-      }
-      var $captchaAnswer = $form.find("[data-fd-captcha-answer]");
-      if (!$captchaAnswer.length) {
-        $captchaAnswer = $form.find("#captchaAnswer");
-      }
-      var $captchaRefresh = $form.find("[data-fd-captcha-refresh]");
-      if (!$captchaRefresh.length) {
-        $captchaRefresh = $form.find("#captchaRefresh");
-      }
-
-      var captchaSolution = null;
-      var generateCaptcha = function () {
-        if (!$captchaQuestion.length) return;
-        var first = Math.floor(Math.random() * 8) + 2; // 2-9 for variety
-        var second = Math.floor(Math.random() * 8) + 1; // 1-8
-        captchaSolution = first + second;
-        $captchaQuestion.text(first + " + " + second + " = ?");
-        if ($captchaAnswer.length) {
-          $captchaAnswer.val("");
-        }
-      };
-
-      if ($captchaQuestion.length) {
-        generateCaptcha();
-      }
-
-      if ($captchaRefresh.length) {
-        $captchaRefresh.on("click", function () {
-          generateCaptcha();
-          if ($captchaAnswer.length) {
-            $captchaAnswer.trigger("focus");
-          }
-        });
-      }
-
       var readVal = function ($field) {
         return $field.length ? $.trim($field.val() || "") : "";
       };
@@ -910,34 +931,17 @@ jQuery(document).ready(function ($) {
         var email = readVal($email);
         var subject = readVal($subject) || "New Contact Inquiry";
         var message = readVal($message);
-        var captchaResponse = $captchaAnswer.length
-          ? $.trim($captchaAnswer.val())
-          : "";
 
         if (!firstName || !lastName || !email || !message) {
           showToast("Please fill in all required fields.", true);
           return;
         }
 
-        if ($captchaQuestion.length) {
-          var parsedCaptcha = parseInt(captchaResponse, 10);
-          if (
-            !captchaResponse ||
-            isNaN(parsedCaptcha) ||
-            parsedCaptcha !== captchaSolution
-          ) {
-            showToast("Captcha answer is incorrect. Please try again.", true);
-            generateCaptcha();
-            return;
-          }
-        }
-
         var fullName = $.trim(firstName + " " + lastName);
 
         $submit.prop("disabled", true).text("Sending...");
 
-        fetch("https://formsubmit.co/ajax/fairdeal.asset@gmail.com", {
-          //   fetch("https://formsubmit.co/ajax/bishant.nayak44@gmail.com", {
+        fetch("https://formsubmit.co/ajax/hello@fairdealassets.com", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -961,12 +965,10 @@ jQuery(document).ready(function ($) {
           .then(function () {
             showToast("Message sent successfully!", false);
             $form[0].reset();
-            generateCaptcha();
           })
           .catch(function (err) {
             console.error("Email send failed", err);
             showToast("Unable to send message. Please try again later.", true);
-            generateCaptcha();
           })
           .finally(function () {
             $submit.prop("disabled", false).text(submitText);
@@ -1122,7 +1124,7 @@ jQuery(document).ready(function ($) {
 
         $submit.prop("disabled", true).text("Sending...");
 
-        fetch("https://formsubmit.co/ajax/fairdeal.asset@gmail.com", {
+        fetch("https://formsubmit.co/ajax/hello@fairdealassets.com", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
