@@ -1,4 +1,7 @@
 (function () {
+  if (window.fdViewportLockApplied) return;
+  window.fdViewportLockApplied = true;
+
   var nav = window.navigator || {};
   var screenObj = window.screen || {};
   var screenWidth = screenObj.width || window.innerWidth || 0;
@@ -24,14 +27,19 @@
     isTabletLikeScreen;
 
   if (shouldForceMobileUi) {
-    document.documentElement.classList.add("fd-force-mobile-ui");
+    document.documentElement.classList.add(
+      "fd-force-mobile-ui",
+      "fd-viewport-locked",
+    );
 
     if (screenMin > 0 && window.innerWidth > screenMin + 80) {
       var viewport = document.querySelector("meta[name='viewport']");
       if (viewport) {
         viewport.setAttribute(
           "content",
-          "width=" + screenMin + ", initial-scale=1, maximum-scale=1, shrink-to-fit=no"
+          "width=" +
+            screenMin +
+            ", initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no, viewport-fit=cover",
         );
       }
       document.documentElement.classList.add("fd-force-physical-viewport");
@@ -170,7 +178,10 @@ jQuery(document).ready(function ($) {
       var $this = $(this),
         w = $this.width();
 
-      if (w > 768) {
+      if (
+        w > 768 &&
+        !document.documentElement.classList.contains("fd-force-mobile-ui")
+      ) {
         if ($("body").hasClass("offcanvas-menu")) {
           closeMobileMenu();
         }

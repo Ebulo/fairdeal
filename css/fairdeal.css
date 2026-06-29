@@ -24,6 +24,23 @@ body {
   scroll-behavior: smooth;
 }
 
+html.fd-viewport-locked,
+html.fd-viewport-locked body {
+  overscroll-behavior-x: none;
+}
+
+html.fd-viewport-locked body {
+  touch-action: pan-x pan-y;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html.fd-viewport-locked input,
+html.fd-viewport-locked select,
+html.fd-viewport-locked textarea {
+  font-size: 16px !important;
+}
+
 /* Typography */
 body {
   font-family: var(--fd-font-sans);
