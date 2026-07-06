@@ -1,0 +1,9 @@
+{
+  "name": "fairdeal-assets-static",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check js/main.js && node --check js/property-detail.js && node --check server.js"
+  }
+}

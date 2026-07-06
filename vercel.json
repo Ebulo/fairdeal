@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/properties/:slug",
+      "destination": "/property.html"
+    },
+    {
+      "source": "/properties/:slug/",
+      "destination": "/property.html"
+    }
+  ]
+}

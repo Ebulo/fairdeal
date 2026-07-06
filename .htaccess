@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^properties/([A-Za-z0-9-]+)/?$ /property.html [L]

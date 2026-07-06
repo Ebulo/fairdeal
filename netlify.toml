@@ -1,0 +1,4 @@
+[[redirects]]
+from = "/properties/*"
+to = "/property.html"
+status = 200

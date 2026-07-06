@@ -10,9 +10,8 @@
   var screenMax = Math.max(screenWidth, screenHeight);
   var touchPoints = nav.maxTouchPoints || nav.msMaxTouchPoints || 0;
   var userAgent = nav.userAgent || "";
-  var isMobileUserAgent = /Android|iPhone|iPod|IEMobile|Opera Mini|Mobile/i.test(
-    userAgent
-  );
+  var isMobileUserAgent =
+    /Android|iPhone|iPod|IEMobile|Opera Mini|Mobile/i.test(userAgent);
   var isTabletUserAgent =
     /iPad|Tablet/i.test(userAgent) ||
     (nav.platform === "MacIntel" && touchPoints > 1);
@@ -579,19 +578,37 @@ jQuery(document).ready(function ($) {
 
   var siteScroll = function () {
     var $win = $(window);
+    var $body = $("body");
     var $nav = $(".js-sticky-header");
 
     if (!$nav.length) return;
+
+    var lastScrollTop = Math.max(0, $win.scrollTop());
+    var minDelta = 6;
 
     var getThreshold = function () {
       return 96;
     };
 
     var applyNavState = function () {
-      var st = $win.scrollTop();
+      var st = Math.max(0, $win.scrollTop());
       var isPast = st > getThreshold();
+      var delta = st - lastScrollTop;
+      var shouldKeepVisible =
+        st < 140 || $body.hasClass("offcanvas-menu") || delta < -minDelta;
+
       $nav.toggleClass("is-glass", isPast);
       $nav.toggleClass("shrink", isPast);
+
+      if (shouldKeepVisible) {
+        $nav.removeClass("is-nav-hidden");
+      } else if (delta > minDelta && isPast) {
+        $nav.addClass("is-nav-hidden");
+      }
+
+      if (Math.abs(delta) >= minDelta) {
+        lastScrollTop = st;
+      }
     };
 
     $win.on("scroll", applyNavState);
@@ -777,7 +794,7 @@ jQuery(document).ready(function ($) {
         '<button type="button" class="fd-contact-modal__close" aria-label="Close contact form" data-fd-modal-close>&times;</button>',
         '<div class="fd-contact-modal__info">',
         '<p class="fd-contact-modal__eyebrow">Get in Touch</p>',
-        '<h3 id="fdContactModalTitle" class="fd-contact-modal__title">Ready to review a property paper trail?</h3>',
+        '<h3 id="fdContactModalTitle" class="fd-contact-modal__title">Ready to review a property file?</h3>',
         '<p class="fd-contact-modal__subtitle">Connect with our team for pricing, documentation, and approval clarity.</p>',
         '<div class="fd-contact-modal__details">',
         '<p style="font-size: 0.8rem;"><strong>Phone/Whatsapp</strong><br><a href="tel:',
@@ -989,15 +1006,15 @@ jQuery(document).ready(function ($) {
       var slideInHtml = [
         '<div class="fd-lead-slidein" aria-live="polite">',
         '<button type="button" class="fd-lead-slidein__close" aria-label="Close lead form" data-fd-lead-close>&times;</button>',
-        "<h4>Get the Bhubaneswar Market Report</h4>",
+        "<h4>Request the Bhubaneswar Market Report</h4>",
         "<p>Request pricing benchmarks and approval checklists in 60 seconds.</p>",
-        '<form data-fd-lead-form data-fd-lead-name="Market Report Slide-in" data-fd-success-message="Thanks! The report is on the way.">',
+        '<form data-fd-lead-form data-fd-lead-name="Market Report Slide-in" data-fd-success-message="Thanks. We received your market report request.">',
         '<div class="form-group">',
         '<label class="sr-only" for="slideInEmail">Email</label>',
         '<input type="email" id="slideInEmail" name="email" class="form-control" placeholder="Email address" autocomplete="email" required>',
         "</div>",
         '<input type="hidden" name="leadSource" value="Market Report Slide-in">',
-        '<button type="submit" class="btn btn-primary btn-sm" data-fd-submit>Send Me the Report</button>',
+        '<button type="submit" class="btn btn-primary btn-sm" data-fd-submit>Request Report</button>',
         "</form>",
         "</div>",
       ].join("");
@@ -1168,6 +1185,307 @@ jQuery(document).ready(function ($) {
     $("[data-fd-lead-form], [data-fd-newsletter-form]").each(function () {
       initLeadForm($(this));
     });
+  })();
+
+  // Property listings from Google Sheets / Apps Script JSONP API
+  (function () {
+    var $section = $("[data-fd-property-listings]").first();
+    if (!$section.length) return;
+
+    var $grid = $section.find("[data-fd-property-grid]").first();
+    var $filters = $section.find("[data-fd-property-filters]").first();
+    var $lockable = $section.find(".fd-listing-preview-lockable").first();
+    var defaultApiUrl = $.trim(
+      window.FD_PROPERTY_LISTINGS_API_URL ||
+        $section.attr("data-fd-property-api-url") ||
+        "https://script.google.com/macros/s/AKfycbwusi8eVx2al27flPBa2WccbHAhIFZr9UJiKXxlpZJJN6hWdrUIc8Ekfd_5b3liUUBqFQ/exec",
+    );
+    var limit = parseInt($section.attr("data-fd-property-limit"), 10) || 6;
+
+    var escapeHtml = function (value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    };
+
+    var normalizeUrl = function (url, fallback) {
+      var raw = $.trim(url || "");
+      if (!raw) return fallback || "#contact-section";
+      if (
+        /^(https?:)?\/\//i.test(raw) ||
+        raw.charAt(0) === "#" ||
+        /^\/[A-Za-z0-9]/.test(raw)
+      ) {
+        return raw;
+      }
+      if (
+        /^(?:\.{0,2}\/)?[A-Za-z0-9][A-Za-z0-9/_.,~%+-]*(?:\?[A-Za-z0-9=&._%+-]*)?(?:#[A-Za-z0-9_-]*)?$/.test(
+          raw,
+        )
+      ) {
+        return raw;
+      }
+      return fallback || "#contact-section";
+    };
+
+    var slugify = function (value) {
+      return $.trim(value || "")
+        .toLowerCase()
+        .replace(/&/g, " and ")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    };
+
+    var getPropertySlug = function (item) {
+      return slugify(item.slug || item.id || item.title || item.name);
+    };
+
+    var buildPropertyDetailUrl = function (item) {
+      var slug = getPropertySlug(item);
+      return slug ? "/properties/" + slug + "/" : "";
+    };
+
+    var getImageOverride = function (item) {
+      var slug = getPropertySlug(item);
+      var overrides = window.FD_PROPERTY_IMAGE_OVERRIDES || {};
+      return (slug && overrides[slug]) || {};
+    };
+
+    var setLocked = function (kicker, title, message, isError) {
+      $section.addClass("is-locked").removeClass("is-ready");
+      $section.toggleClass("is-error", Boolean(isError));
+      $lockable.attr("aria-hidden", "true");
+      $section.find("[data-fd-listings-lock-kicker]").text(kicker);
+      $section.find("[data-fd-listings-lock-title]").text(title);
+      $section.find("[data-fd-listings-lock-message]").text(message);
+    };
+
+    var setReady = function () {
+      $section.removeClass("is-locked is-error").addClass("is-ready");
+      $lockable.attr("aria-hidden", "false");
+      $lockable.find('[tabindex="-1"]').removeAttr("tabindex");
+    };
+
+    var addParams = function (url, params) {
+      var separator = url.indexOf("?") === -1 ? "?" : "&";
+      var query = $.param(params);
+      return url + separator + query;
+    };
+
+    var loadJsonp = function (url) {
+      return new Promise(function (resolve, reject) {
+        var callbackName =
+          "__fdPropertyListings_" +
+          Date.now() +
+          "_" +
+          Math.floor(Math.random() * 100000);
+        var script = document.createElement("script");
+        var timeoutId = window.setTimeout(function () {
+          cleanup();
+          reject(new Error("Property API timed out."));
+        }, 12000);
+
+        function cleanup() {
+          window.clearTimeout(timeoutId);
+          try {
+            delete window[callbackName];
+          } catch (err) {
+            window[callbackName] = undefined;
+          }
+          if (script.parentNode) script.parentNode.removeChild(script);
+        }
+
+        window[callbackName] = function (payload) {
+          cleanup();
+          resolve(payload);
+        };
+
+        script.async = true;
+        script.src = addParams(url, {
+          callback: callbackName,
+          limit: limit,
+          status: "active",
+        });
+        script.onerror = function () {
+          cleanup();
+          reject(new Error("Property API could not be loaded."));
+        };
+        document.head.appendChild(script);
+      });
+    };
+
+    var normalizeListings = function (payload) {
+      var rows = [];
+      if (Array.isArray(payload)) rows = payload;
+      else if (payload && Array.isArray(payload.data)) rows = payload.data;
+      else if (payload && Array.isArray(payload.properties))
+        rows = payload.properties;
+
+      return rows
+        .filter(function (item) {
+          return item && (item.title || item.name);
+        })
+        .slice(0, limit);
+    };
+
+    var renderFilters = function (items) {
+      if (!$filters.length) return;
+      var labels = [];
+
+      items.forEach(function (item) {
+        [item.category, item.propertyType, item.transactionType].forEach(
+          function (label) {
+            label = $.trim(label || "");
+            if (label && labels.indexOf(label) === -1) labels.push(label);
+          },
+        );
+      });
+
+      if (!labels.length) return;
+      $filters.html(
+        labels
+          .slice(0, 8)
+          .map(function (label) {
+            return "<span>" + escapeHtml(label) + "</span>";
+          })
+          .join(""),
+      );
+    };
+
+    var renderListings = function (items) {
+      if (!$grid.length) return;
+      var contactFallback = "#contact-section";
+
+      $grid.html(
+        items
+          .map(function (item) {
+            var title = item.title || item.name || "Verified property";
+            var imageOverride = getImageOverride(item);
+            var tag =
+              item.category ||
+              item.propertyType ||
+              item.transactionType ||
+              "Verified";
+            var generatedDetailUrl = buildPropertyDetailUrl(item);
+            var explicitDetailUrl = $.trim(item.detailUrl || item.url || "");
+            if (!explicitDetailUrl || explicitDetailUrl.charAt(0) === "#") {
+              explicitDetailUrl = generatedDetailUrl;
+            }
+            var detailUrl = normalizeUrl(
+              explicitDetailUrl,
+              contactFallback,
+            );
+            var contactUrl = normalizeUrl(item.contactUrl, contactFallback);
+            var imageUrl = normalizeUrl(
+              imageOverride.imageUrl || item.imageUrl || item.image || "",
+              "images/property/chatgpt/aerial-plotted-development.png",
+            );
+            var price = item.priceLabel || item.price || "Price on request";
+            var description =
+              item.shortDescription ||
+              item.description ||
+              [item.location, item.approvalStatus, item.possessionTimeline]
+                .filter(Boolean)
+                .join(" | ") ||
+              "Verified mandate with documentation and pricing details available on request.";
+            var contactLabel = item.contactLabel || "Contact Fairdeal";
+            var isAnchor = contactUrl.charAt(0) === "#";
+
+            return (
+              '<div class="col-md-6 col-lg-4 mb-4">' +
+              '<article class="fd-listing-preview-card">' +
+              '<a href="' +
+              escapeHtml(detailUrl) +
+              '" class="fd-listing-preview-card__media">' +
+              '<img src="' +
+              escapeHtml(imageUrl) +
+              '" alt="' +
+              escapeHtml(title) +
+              '" loading="lazy" decoding="async">' +
+              "</a>" +
+              '<div class="fd-listing-preview-card__body">' +
+              '<span class="fd-listing-preview-card__tag">' +
+              escapeHtml(tag) +
+              "</span>" +
+              '<h3><a href="' +
+              escapeHtml(detailUrl) +
+              '">' +
+              escapeHtml(title) +
+              "</a></h3>" +
+              "<strong>" +
+              escapeHtml(price) +
+              "</strong>" +
+              "<p>" +
+              escapeHtml(description) +
+              "</p>" +
+              '<a href="' +
+              escapeHtml(contactUrl) +
+              '"' +
+              (isAnchor
+                ? ' class="smoothscroll"'
+                : ' target="_blank" rel="noopener"') +
+              ">" +
+              escapeHtml(contactLabel) +
+              "</a>" +
+              "</div>" +
+              "</article>" +
+              "</div>"
+            );
+          })
+          .join(""),
+      );
+    };
+
+    if (!defaultApiUrl) {
+      setLocked(
+        "API not connected",
+        "Property listings are ready for Google Sheets",
+        "Add your deployed Google Apps Script web app URL to FD_PROPERTY_LISTINGS_API_URL to publish live inventory here.",
+        false,
+      );
+      return;
+    }
+
+    setLocked(
+      "Loading listings",
+      "Fetching verified property listings",
+      "We are loading the latest active properties from the connected inventory sheet.",
+      false,
+    );
+
+    loadJsonp(defaultApiUrl)
+      .then(function (payload) {
+        if (payload && payload.status === "error") {
+          throw new Error(payload.message || "Property API returned an error.");
+        }
+
+        var items = normalizeListings(payload);
+        if (!items.length) {
+          setLocked(
+            "No active listings",
+            "No verified properties are currently published",
+            "Add active property rows in the connected Google Sheet and they will appear here automatically.",
+            false,
+          );
+          return;
+        }
+
+        renderFilters(items);
+        renderListings(items);
+        setReady();
+      })
+      .catch(function (err) {
+        console.error("Property listings API failed", err);
+        setLocked(
+          "Listings unavailable",
+          "Property listings could not be loaded",
+          "The connected listings API is unreachable or returned invalid data. Please try again later or contact Fairdeal for the latest inventory.",
+          true,
+        );
+      });
   })();
 
   // Render gallery items from generated manifest
