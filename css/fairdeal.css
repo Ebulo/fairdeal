@@ -2300,7 +2300,7 @@ o .fd-hero-modern__mist {
 .fd-impact-image {
   overflow: hidden;
   border-radius: 8px;
-  max-height: 460px;
+  /* max-height: 460px; */
   background: #dcebf2 url("../images/property/30.png") center/cover;
   box-shadow: var(--fd-modern-shadow);
 }
