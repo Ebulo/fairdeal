@@ -2284,7 +2284,7 @@ o .fd-hero-modern__mist {
 .fd-impact-stat strong {
   display: block;
   color: var(--fd-modern-ink);
-  font-size: 3.2rem;
+  font-size: 1.7rem;
   line-height: 1;
   font-weight: 900;
   margin-bottom: 12px;
@@ -3679,7 +3679,7 @@ h6,
 
 .fd-impact-stat strong {
   color: #fff;
-  font-size: clamp(2.8rem, 5vw, 4.6rem);
+  font-size: 1.8rem;
   letter-spacing: 0;
 }
 
@@ -3967,6 +3967,77 @@ h6,
 .founder-card p {
   color: var(--fd-pro-muted);
   font-size: 0.95rem;
+}
+
+.founders-strip-wrap {
+  position: relative;
+  margin: 0 -12px;
+}
+
+.founders-strip-wrap::before,
+.founders-strip-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 48px;
+  pointer-events: none;
+}
+
+.founders-strip-wrap::before {
+  left: 0;
+  background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.founders-strip-wrap::after {
+  right: 0;
+  background: linear-gradient(270deg, #fff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.founders-strip {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 12px 18px;
+  scroll-padding-inline: 12px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.founders-strip::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.founders-strip:focus-visible {
+  outline: 2px solid rgba(216, 180, 95, 0.65);
+  outline-offset: 8px;
+  border-radius: 24px;
+}
+
+.founder-card-shell {
+  flex: 0 0 clamp(330px, 42vw, 460px);
+  display: flex;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.founder-card-shell > .founder-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+}
+
+.founder-card-shell > .founder-card .p-4 {
+  flex: 1;
 }
 
 .fd-about-visual {
@@ -5076,6 +5147,25 @@ a:active,
 }
 
 @media (max-width: 767.98px) {
+  .founders-strip-wrap {
+    margin: 0 -6px;
+  }
+
+  .founders-strip-wrap::before,
+  .founders-strip-wrap::after {
+    width: 24px;
+  }
+
+  .founders-strip {
+    gap: 18px;
+    padding: 6px 6px 16px;
+    scroll-padding-inline: 6px;
+  }
+
+  .founder-card-shell {
+    flex-basis: min(88vw, 360px);
+  }
+
   .founder-card.team-member figure {
     height: 360px;
     border-radius: 28px !important;
@@ -7004,8 +7094,16 @@ body,
 #vision-section {
   position: relative;
   background:
-    radial-gradient(circle at 12% 16%, rgba(73, 161, 150, 0.22), transparent 34%),
-    radial-gradient(circle at 86% 18%, rgba(235, 181, 78, 0.2), transparent 32%),
+    radial-gradient(
+      circle at 12% 16%,
+      rgba(73, 161, 150, 0.22),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 86% 18%,
+      rgba(235, 181, 78, 0.2),
+      transparent 32%
+    ),
     linear-gradient(135deg, #eef7f3 0%, #f7f3e9 48%, #e9f3f8 100%) !important;
   overflow: hidden;
   isolation: isolate;
@@ -7027,8 +7125,16 @@ body,
   left: -14%;
   top: 10%;
   background:
-    radial-gradient(circle at 35% 35%, rgba(68, 157, 145, 0.22), transparent 52%),
-    radial-gradient(circle at 70% 62%, rgba(248, 227, 178, 0.28), transparent 48%);
+    radial-gradient(
+      circle at 35% 35%,
+      rgba(68, 157, 145, 0.22),
+      transparent 52%
+    ),
+    radial-gradient(
+      circle at 70% 62%,
+      rgba(248, 227, 178, 0.28),
+      transparent 48%
+    );
   border-radius: 999px;
   filter: blur(24px);
   opacity: 0.86;
@@ -7044,8 +7150,16 @@ body,
   right: -12%;
   bottom: -18%;
   background:
-    radial-gradient(circle at 42% 42%, rgba(84, 137, 178, 0.2), transparent 50%),
-    radial-gradient(circle at 68% 66%, rgba(226, 184, 93, 0.18), transparent 46%);
+    radial-gradient(
+      circle at 42% 42%,
+      rgba(84, 137, 178, 0.2),
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 68% 66%,
+      rgba(226, 184, 93, 0.18),
+      transparent 46%
+    );
   border-radius: 999px;
   filter: blur(30px);
   opacity: 0.82;
@@ -8484,9 +8598,23 @@ html.fd-force-mobile-ui .fd-about-flow {
 .fd-inner-hero--property.overlay::before {
   z-index: 0;
   background:
-    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.08), transparent 34%),
-    linear-gradient(90deg, rgba(3, 8, 14, 0.88), rgba(7, 16, 24, 0.68) 45%, rgba(7, 16, 24, 0.5)),
-    linear-gradient(180deg, rgba(3, 8, 14, 0.72), rgba(3, 8, 14, 0.42) 42%, rgba(3, 8, 14, 0.82));
+    radial-gradient(
+      circle at 50% 44%,
+      rgba(255, 255, 255, 0.08),
+      transparent 34%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(3, 8, 14, 0.88),
+      rgba(7, 16, 24, 0.68) 45%,
+      rgba(7, 16, 24, 0.5)
+    ),
+    linear-gradient(
+      180deg,
+      rgba(3, 8, 14, 0.72),
+      rgba(3, 8, 14, 0.42) 42%,
+      rgba(3, 8, 14, 0.82)
+    );
   -webkit-backdrop-filter: blur(1px);
   backdrop-filter: blur(1px);
 }
@@ -8600,7 +8728,10 @@ html.fd-force-mobile-ui .fd-about-flow {
   backdrop-filter: blur(12px);
 }
 
-.fd-inner-hero--property .hero-metrics .list-inline-item + .list-inline-item::before {
+.fd-inner-hero--property
+  .hero-metrics
+  .list-inline-item
+  + .list-inline-item::before {
   content: none;
 }
 
@@ -8666,7 +8797,12 @@ html.fd-force-mobile-ui .fd-about-flow {
   .fd-inner-hero--property.overlay::before {
     background:
       linear-gradient(90deg, rgba(3, 8, 14, 0.9), rgba(7, 16, 24, 0.78)),
-      linear-gradient(180deg, rgba(3, 8, 14, 0.74), rgba(3, 8, 14, 0.5) 44%, rgba(3, 8, 14, 0.86));
+      linear-gradient(
+        180deg,
+        rgba(3, 8, 14, 0.74),
+        rgba(3, 8, 14, 0.5) 44%,
+        rgba(3, 8, 14, 0.86)
+      );
   }
 
   .fd-inner-hero--property > .container {
