@@ -878,6 +878,88 @@ jQuery(document).ready(function ($) {
     // Keep the refreshed hero calm: contact opens from explicit CTAs only.
   })();
 
+  // Founder read-more modal
+  (function () {
+    if (!$("[data-fd-founder-readmore]").length) return;
+
+    var $body = $("body");
+    var $modal = $(".fd-founder-modal");
+    var $lastTrigger = $();
+
+    if (!$modal.length) {
+      $modal = $(
+        [
+          '<div class="fd-founder-modal" aria-hidden="true">',
+          '<div class="fd-founder-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="fdFounderModalTitle" tabindex="-1">',
+          '<button type="button" class="fd-founder-modal__close" aria-label="Close founder bio" data-fd-founder-close>&times;</button>',
+          '<p class="fd-founder-modal__eyebrow">Founder &amp; Partner</p>',
+          '<h3 id="fdFounderModalTitle" class="fd-founder-modal__title"></h3>',
+          '<p class="fd-founder-modal__role"></p>',
+          '<div class="fd-founder-modal__body"></div>',
+          "</div>",
+          "</div>",
+        ].join(""),
+      );
+      $body.append($modal);
+    }
+
+    var $dialog = $modal.find(".fd-founder-modal__dialog");
+    var $title = $modal.find(".fd-founder-modal__title");
+    var $role = $modal.find(".fd-founder-modal__role");
+    var $bio = $modal.find(".fd-founder-modal__body");
+
+    var closeFounderModal = function () {
+      $modal.removeClass("is-visible").attr("aria-hidden", "true");
+      $body.removeClass("fd-modal-open");
+
+      if ($lastTrigger.length) {
+        $lastTrigger.trigger("focus");
+      }
+    };
+
+    var openFounderModal = function ($trigger) {
+      var $card = $trigger.closest(".founder-card");
+      var title = $.trim($card.find("h3").first().text());
+      var role = $.trim($card.find(".position").first().text());
+      var bioHtml = $card.find(".founder-card__bio-full").first().html();
+
+      if (!bioHtml) return;
+
+      $lastTrigger = $trigger;
+      $title.text(title);
+      $role.text(role);
+      $bio.html(bioHtml);
+      $modal.addClass("is-visible").attr("aria-hidden", "false");
+      $body.addClass("fd-modal-open");
+
+      if ($dialog.length) {
+        $dialog.trigger("focus");
+      }
+    };
+
+    $(document).on("click", "[data-fd-founder-readmore]", function (evt) {
+      evt.preventDefault();
+      openFounderModal($(this));
+    });
+
+    $modal.on("click", "[data-fd-founder-close]", function () {
+      closeFounderModal();
+    });
+
+    $modal.on("click", function (evt) {
+      if (evt.target === this) {
+        closeFounderModal();
+      }
+    });
+
+    $(document).on("keydown", function (evt) {
+      if (!$modal.hasClass("is-visible")) return;
+      if (evt.key === "Escape") {
+        closeFounderModal();
+      }
+    });
+  })();
+
   // Contact form email handling
   (function () {
     var $forms = $("[data-fd-contact-form]");
@@ -1005,7 +1087,7 @@ jQuery(document).ready(function ($) {
     if (!$(".fd-lead-slidein").length) {
       var slideInHtml = [
         '<div class="fd-lead-slidein" aria-live="polite">',
-        '<button type="button" class="fd-lead-slidein__close" aria-label="Close lead form" data-fd-lead-close>&times;</button>',
+        '<button type="button" class="fd-lead-slidein__close" aria-label="Close lead form" data-fd-lead-close><img src="/images/icons/remove.png" alt="Close" style="color: #000;" /></button>',
         "<h4>Request the Bhubaneswar Market Report</h4>",
         "<p>Request pricing benchmarks and approval checklists in 60 seconds.</p>",
         '<form data-fd-lead-form data-fd-lead-name="Market Report Slide-in" data-fd-success-message="Thanks. We received your market report request.">',
@@ -1374,10 +1456,7 @@ jQuery(document).ready(function ($) {
             if (!explicitDetailUrl || explicitDetailUrl.charAt(0) === "#") {
               explicitDetailUrl = generatedDetailUrl;
             }
-            var detailUrl = normalizeUrl(
-              explicitDetailUrl,
-              contactFallback,
-            );
+            var detailUrl = normalizeUrl(explicitDetailUrl, contactFallback);
             var contactUrl = normalizeUrl(item.contactUrl, contactFallback);
             var imageUrl = normalizeUrl(
               imageOverride.imageUrl || item.imageUrl || item.image || "",
